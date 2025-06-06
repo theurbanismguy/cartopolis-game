@@ -33,9 +33,8 @@ const CityMap: React.FC<CityMapProps> = ({ city, showAnswer }) => {
     });
 
     // Add OpenStreetMap tile layer without labels
-    // Using a tile server that provides maps without text labels
-    L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png', {
-      attribution: '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors',
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://openstreetmap.org">OpenStreetMap</a> contributors',
       maxZoom: 18,
     }).addTo(map);
 
