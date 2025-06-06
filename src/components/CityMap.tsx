@@ -76,12 +76,14 @@ const CityMap: React.FC<CityMapProps> = ({ city, showAnswer }) => {
   return (
     <div className="w-full h-96 rounded-lg shadow-lg overflow-hidden">
       <div ref={mapRef} className="w-full h-full rounded-lg" />
-      <style jsx>{`
-        .custom-marker {
-          background: transparent;
-          border: none;
-        }
-      `}</style>
+      <style dangerouslySetInnerHTML={{
+        __html: `
+          .custom-marker {
+            background: transparent !important;
+            border: none !important;
+          }
+        `
+      }} />
     </div>
   );
 };
