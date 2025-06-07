@@ -2,56 +2,72 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Trophy, RefreshCw, X } from 'lucide-react';
+import { Trophy, RefreshCw, X, ToggleLeft, ToggleRight, Home, Globe, Satellite } from 'lucide-react';
 
 interface FloatingControlsProps {
   onShowLeaderboard: () => void;
   onResetGame: () => void;
   onEndGame: () => void;
+  onToggleMapView: () => void;
+  onBackToMenu: () => void;
+  mapView: 'satellite' | 'vector';
 }
 
 const FloatingControls: React.FC<FloatingControlsProps> = ({
   onShowLeaderboard,
   onResetGame,
-  onEndGame
+  onEndGame,
+  onToggleMapView,
+  onBackToMenu,
+  mapView
 }) => {
   return (
     <div className="fixed top-6 left-6 z-50">
-      <Card className="bg-white/90 backdrop-blur-md border-white/20 shadow-xl">
+      <div className="neo-card bg-white/95 backdrop-blur-sm">
         <CardContent className="p-3">
           <div className="flex flex-col gap-2">
-            <Button
-              variant="outline"
-              size="sm"
+            <button
+              onClick={onToggleMapView}
+              className="neo-button-secondary text-sm px-3 py-2 flex items-center gap-2"
+            >
+              {mapView === 'satellite' ? <Satellite className="w-4 h-4" /> : <Globe className="w-4 h-4" />}
+              {mapView === 'satellite' ? 'SATELLITE' : 'VECTOR'}
+            </button>
+            
+            <button
               onClick={onShowLeaderboard}
-              className="bg-white/80 hover:bg-white/90 border-gray-200"
+              className="neo-button-accent text-sm px-3 py-2 flex items-center gap-2"
             >
-              <Trophy className="w-4 h-4 mr-2" />
-              Leaderboard
-            </Button>
+              <Trophy className="w-4 h-4" />
+              LEADERBOARD
+            </button>
             
-            <Button
-              variant="outline"
-              size="sm"
+            <button
               onClick={onResetGame}
-              className="bg-white/80 hover:bg-white/90 border-gray-200"
+              className="neo-button-secondary text-sm px-3 py-2 flex items-center gap-2"
             >
-              <RefreshCw className="w-4 h-4 mr-2" />
-              Reset
-            </Button>
+              <RefreshCw className="w-4 h-4" />
+              RESET
+            </button>
             
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={onEndGame}
-              className="bg-white/80 hover:bg-red-50 border-gray-200 text-red-600 hover:text-red-700"
+            <button
+              onClick={onBackToMenu}
+              className="neo-button text-sm px-3 py-2 flex items-center gap-2"
             >
-              <X className="w-4 h-4 mr-2" />
-              End Game
-            </Button>
+              <Home className="w-4 h-4" />
+              MENU
+            </button>
+            
+            <button
+              onClick={onEndGame}
+              className="neo-button text-sm px-3 py-2 flex items-center gap-2 bg-destructive hover:bg-destructive/90 text-destructive-foreground"
+            >
+              <X className="w-4 h-4" />
+              END GAME
+            </button>
           </div>
         </CardContent>
-      </Card>
+      </div>
     </div>
   );
 };

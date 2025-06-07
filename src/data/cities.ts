@@ -1,4 +1,3 @@
-
 export interface City {
   name: string;
   country: string;
@@ -8,7 +7,7 @@ export interface City {
   continent: string;
 }
 
-// Comprehensive list of cities with population > 500,000 from OpenDataSoft
+// Enhanced list of cities with population > 100,000 from OpenDataSoft
 export const cities: City[] = [
   { name: "Tokyo", country: "Japan", lat: 35.6762, lng: 139.6503, population: 13960000, continent: "Asia" },
   { name: "Delhi", country: "India", lat: 28.7041, lng: 77.1025, population: 29617000, continent: "Asia" },
@@ -93,86 +92,57 @@ export const cities: City[] = [
   { name: "Casablanca", country: "Morocco", lat: 33.5731, lng: -7.5898, population: 4370000, continent: "Africa" },
   { name: "Cape Town", country: "South Africa", lat: -33.9249, lng: 18.4241, population: 4524000, continent: "Africa" },
   { name: "Montreal", country: "Canada", lat: 45.5017, lng: -73.5673, population: 4098000, continent: "North America" },
-  { name: "Seattle", country: "United States", lat: 47.6062, lng: -122.3321, population: 3789000, continent: "North America" },
-  { name: "Minneapolis", country: "United States", lat: 44.9778, lng: -93.2650, population: 3690000, continent: "North America" },
-  { name: "San Diego", country: "United States", lat: 32.7157, lng: -117.1611, population: 3338000, continent: "North America" },
-  { name: "Tampa", country: "United States", lat: 27.9506, lng: -82.4572, population: 3054000, continent: "North America" },
-  { name: "Denver", country: "United States", lat: 39.7392, lng: -104.9903, population: 2963000, continent: "North America" },
-  { name: "St. Louis", country: "United States", lat: 38.6270, lng: -90.1994, population: 2807000, continent: "North America" },
-  { name: "Baltimore", country: "United States", lat: 39.2904, lng: -76.6122, population: 2844000, continent: "North America" },
-  { name: "Charlotte", country: "United States", lat: 35.2271, lng: -80.8431, population: 2797000, continent: "North America" },
-  { name: "Orlando", country: "United States", lat: 28.5383, lng: -81.3792, population: 2509000, continent: "North America" },
-  { name: "San Antonio", country: "United States", lat: 29.4241, lng: -98.4936, population: 2473000, continent: "North America" },
-  { name: "Portland", country: "United States", lat: 45.5152, lng: -122.6784, population: 2492000, continent: "North America" },
-  { name: "Pittsburgh", country: "United States", lat: 40.4406, lng: -79.9959, population: 2370000, continent: "North America" },
-  { name: "Sacramento", country: "United States", lat: 38.5816, lng: -121.4944, population: 2363000, continent: "North America" },
-  { name: "Cincinnati", country: "United States", lat: 39.1031, lng: -84.5120, population: 2256000, continent: "North America" },
-  { name: "Las Vegas", country: "United States", lat: 36.1699, lng: -115.1398, population: 2227000, continent: "North America" },
-  { name: "Kansas City", country: "United States", lat: 39.0997, lng: -94.5786, population: 2192000, continent: "North America" },
-  { name: "Cleveland", country: "United States", lat: 41.4993, lng: -81.6944, population: 2088000, continent: "North America" },
-  { name: "Columbus", country: "United States", lat: 39.9612, lng: -82.9988, population: 2078000, continent: "North America" },
-  { name: "Indianapolis", country: "United States", lat: 39.7684, lng: -86.1581, population: 2074000, continent: "North America" },
-  { name: "San Jose", country: "United States", lat: 37.3382, lng: -121.8863, population: 2000000, continent: "North America" },
-  { name: "Austin", country: "United States", lat: 30.2672, lng: -97.7431, population: 2056000, continent: "North America" },
-  { name: "Nashville", country: "United States", lat: 36.1627, lng: -86.7816, population: 1934000, continent: "North America" },
-  { name: "Virginia Beach", country: "United States", lat: 36.8529, lng: -75.9780, population: 1723000, continent: "North America" },
-  { name: "Providence", country: "United States", lat: 41.8240, lng: -71.4128, population: 1676000, continent: "North America" },
-  { name: "Milwaukee", country: "United States", lat: 43.0389, lng: -87.9065, population: 1576000, continent: "North America" },
-  { name: "Jacksonville", country: "United States", lat: 30.3322, lng: -81.6557, population: 1533000, continent: "North America" },
-  { name: "Memphis", country: "United States", lat: 35.1495, lng: -90.0490, population: 1342000, continent: "North America" },
-  { name: "Oklahoma City", country: "United States", lat: 35.4676, lng: -97.5164, population: 1408000, continent: "North America" },
-  { name: "Louisville", country: "United States", lat: 38.2527, lng: -85.7585, population: 1297000, continent: "North America" },
-  { name: "Richmond", country: "United States", lat: 37.5407, lng: -77.4360, population: 1260000, continent: "North America" },
-  { name: "New Orleans", country: "United States", lat: 29.9511, lng: -90.0715, population: 1271000, continent: "North America" },
-  { name: "Raleigh", country: "United States", lat: 35.7796, lng: -78.6382, population: 1390000, continent: "North America" },
-  { name: "Hartford", country: "United States", lat: 41.7658, lng: -72.6734, population: 1214000, continent: "North America" },
-  { name: "Salt Lake City", country: "United States", lat: 40.7608, lng: -111.8910, population: 1257000, continent: "North America" },
-  { name: "Buffalo", country: "United States", lat: 42.8864, lng: -78.8784, population: 1166000, continent: "North America" },
-  { name: "Rochester", country: "United States", lat: 43.1566, lng: -77.6088, population: 1069000, continent: "North America" },
-  { name: "Grand Rapids", country: "United States", lat: 42.9634, lng: -85.6681, population: 1077000, continent: "North America" },
-  { name: "Tucson", country: "United States", lat: 32.2226, lng: -110.9747, population: 1039000, continent: "North America" },
-  { name: "Urban Honolulu", country: "United States", lat: 21.3099, lng: -157.8581, population: 1016000, continent: "North America" },
-  { name: "Tulsa", country: "United States", lat: 36.1540, lng: -95.9928, population: 998000, continent: "North America" },
-  { name: "Fresno", country: "United States", lat: 36.7378, lng: -119.7871, population: 978000, continent: "North America" },
-  { name: "Worcester", country: "United States", lat: 42.2626, lng: -71.8023, population: 923000, continent: "North America" },
-  { name: "Bridgeport", country: "United States", lat: 41.1865, lng: -73.1952, population: 939000, continent: "North America" },
-  { name: "Albuquerque", country: "United States", lat: 35.0844, lng: -106.6504, population: 916000, continent: "North America" },
-  { name: "Albany", country: "United States", lat: 42.6803, lng: -73.8370, population: 883000, continent: "North America" },
-  { name: "New Haven", country: "United States", lat: 41.3083, lng: -72.9279, population: 862000, continent: "North America" },
-  { name: "Bakersfield", country: "United States", lat: 35.3733, lng: -119.0187, population: 840000, continent: "North America" },
-  { name: "Omaha", country: "United States", lat: 41.2565, lng: -95.9345, population: 967000, continent: "North America" },
-  { name: "Akron", country: "United States", lat: 41.0814, lng: -81.5190, population: 703000, continent: "North America" },
-  { name: "Allentown", country: "United States", lat: 40.6023, lng: -75.4714, population: 840000, continent: "North America" },
-  { name: "El Paso", country: "United States", lat: 31.7619, lng: -106.4850, population: 844000, continent: "North America" },
-  { name: "Baton Rouge", country: "United States", lat: 30.4518, lng: -91.1871, population: 820000, continent: "North America" },
-  { name: "Dayton", country: "United States", lat: 39.7589, lng: -84.1916, population: 808000, continent: "North America" },
-  { name: "Des Moines", country: "United States", lat: 41.5868, lng: -93.6250, population: 699000, continent: "North America" },
-  { name: "Cape Coral", country: "United States", lat: 26.5629, lng: -81.9495, population: 770000, continent: "North America" },
-  { name: "Sarasota", country: "United States", lat: 27.3364, lng: -82.5307, population: 821000, continent: "North America" },
-  { name: "McAllen", country: "United States", lat: 26.2034, lng: -98.2300, population: 868000, continent: "North America" },
-  { name: "Stockton", country: "United States", lat: 37.9577, lng: -121.2908, population: 765000, continent: "North America" },
-  { name: "Deltona", country: "United States", lat: 28.9005, lng: -81.2637, population: 688000, continent: "North America" },
-  { name: "Little Rock", country: "United States", lat: 34.7465, lng: -92.2896, population: 729000, continent: "North America" },
-  { name: "Augusta", country: "United States", lat: 33.4735, lng: -82.0105, population: 600000, continent: "North America" },
-  { name: "Poughkeepsie", country: "United States", lat: 41.7004, lng: -73.9209, population: 670000, continent: "North America" },
-  { name: "Charleston", country: "United States", lat: 32.7765, lng: -79.9311, population: 802000, continent: "North America" },
-  { name: "Greensboro", country: "United States", lat: 36.0726, lng: -79.7920, population: 773000, continent: "North America" },
-  { name: "Provo", country: "United States", lat: 40.2338, lng: -111.6585, population: 671000, continent: "North America" },
-  { name: "Spokane", country: "United States", lat: 47.6587, lng: -117.4260, population: 573000, continent: "North America" },
-  { name: "Boise", country: "United States", lat: 43.6150, lng: -116.2023, population: 749000, continent: "North America" },
-  { name: "Fayetteville", country: "United States", lat: 35.0527, lng: -78.8784, population: 551000, continent: "North America" },
-  { name: "Winston-Salem", country: "United States", lat: 36.0999, lng: -80.2442, population: 695000, continent: "North America" },
-  { name: "Knoxville", country: "United States", lat: 35.9606, lng: -83.9207, population: 868000, continent: "North America" },
-  { name: "Modesto", country: "United States", lat: 37.6391, lng: -120.9969, population: 552000, continent: "North America" },
-  { name: "Oxnard", country: "United States", lat: 34.1975, lng: -119.1771, population: 868000, continent: "North America" },
-  { name: "Lakeland", country: "United States", lat: 28.0395, lng: -81.9498, population: 725000, continent: "North America" },
-  { name: "Mobile", country: "United States", lat: 30.6954, lng: -88.0399, population: 430000, continent: "North America" },
-  { name: "Columbia", country: "United States", lat: 34.0007, lng: -81.0348, population: 838000, continent: "North America" },
-  { name: "Colorado Springs", country: "United States", lat: 38.8339, lng: -104.8214, population: 738000, continent: "North America" },
-  { name: "Wichita", country: "United States", lat: 37.6872, lng: -97.3301, population: 647000, continent: "North America" },
-  { name: "Madison", country: "United States", lat: 43.0731, lng: -89.4012, population: 664000, continent: "North America" }
+  // Adding more cities with 100K+ population for hard difficulty
+  { name: "Freiburg", country: "Germany", lat: 47.9990, lng: 7.8421, population: 230940, continent: "Europe" },
+  { name: "Salzburg", country: "Austria", lat: 47.8095, lng: 13.0550, population: 155021, continent: "Europe" },
+  { name: "Bordeaux", country: "France", lat: 44.8378, lng: -0.5792, population: 249712, continent: "Europe" },
+  { name: "Nantes", country: "France", lat: 47.2184, lng: -1.5536, population: 309346, continent: "Europe" },
+  { name: "Strasbourg", country: "France", lat: 48.5734, lng: 7.7521, population: 280966, continent: "Europe" },
+  { name: "Lille", country: "France", lat: 50.6292, lng: 3.0573, population: 232741, continent: "Europe" },
+  { name: "Rennes", country: "France", lat: 48.1173, lng: -1.6778, population: 217728, continent: "Europe" },
+  { name: "Reims", country: "France", lat: 49.2583, lng: 4.0317, population: 183042, continent: "Europe" },
+  { name: "Le Havre", country: "France", lat: 49.4944, lng: 0.1079, population: 170147, continent: "Europe" },
+  { name: "Saint-Étienne", country: "France", lat: 45.4397, lng: 4.3872, population: 171057, continent: "Europe" },
+  { name: "Toulon", country: "France", lat: 43.1242, lng: 5.9280, population: 171953, continent: "Europe" },
+  { name: "Angers", country: "France", lat: 47.4784, lng: -0.5632, population: 154508, continent: "Europe" },
+  { name: "Grenoble", country: "France", lat: 45.1885, lng: 5.7245, population: 158454, continent: "Europe" },
+  { name: "Dijon", country: "France", lat: 47.3220, lng: 5.0415, population: 156920, continent: "Europe" },
+  { name: "Nîmes", country: "France", lat: 43.8367, lng: 4.3601, population: 151001, continent: "Europe" },
+  { name: "Aix-en-Provence", country: "France", lat: 43.5297, lng: 5.4474, population: 145071, continent: "Europe" },
+  { name: "Brest", country: "France", lat: 48.3905, lng: -4.4860, population: 139676, continent: "Europe" },
+  { name: "Le Mans", country: "France", lat: 48.0077, lng: 0.1996, population: 143599, continent: "Europe" },
+  { name: "Amiens", country: "France", lat: 49.8941, lng: 2.2958, population: 133891, continent: "Europe" },
+  { name: "Tours", country: "France", lat: 47.3941, lng: 0.6848, population: 136463, continent: "Europe" },
+  { name: "Limoges", country: "France", lat: 45.8336, lng: 1.2611, population: 132175, continent: "Europe" },
+  { name: "Villeurbanne", country: "France", lat: 45.7640, lng: 4.8827, population: 147712, continent: "Europe" },
+  { name: "Clermont-Ferrand", country: "France", lat: 45.7797, lng: 3.0863, population: 143886, continent: "Europe" },
+  { name: "Besançon", country: "France", lat: 47.2380, lng: 6.0243, population: 116914, continent: "Europe" },
+  { name: "Orléans", country: "France", lat: 47.9029, lng: 1.9093, population: 116269, continent: "Europe" },
+  { name: "Rouen", country: "France", lat: 49.4431, lng: 1.0993, population: 110145, continent: "Europe" },
+  { name: "Mulhouse", country: "France", lat: 47.7508, lng: 7.3359, population: 108312, continent: "Europe" },
+  { name: "Perpignan", country: "France", lat: 42.6886, lng: 2.8956, population: 121934, continent: "Europe" },
+  { name: "Caen", country: "France", lat: 49.1829, lng: -0.3707, population: 105512, continent: "Europe" },
+  { name: "Boulogne-Billancourt", country: "France", lat: 48.8336, lng: 2.2401, population: 120071, continent: "Europe" },
+  { name: "Metz", country: "France", lat: 49.1193, lng: 6.1757, population: 116429, continent: "Europe" },
+  { name: "Nancy", country: "France", lat: 48.6921, lng: 6.1844, population: 104885, continent: "Europe" },
 ];
 
-export const getRandomCity = (): City => {
-  return cities[Math.floor(Math.random() * cities.length)];
+export type Difficulty = 'easy' | 'medium' | 'hard';
+
+export const getCitiesByDifficulty = (difficulty: Difficulty): City[] => {
+  switch (difficulty) {
+    case 'easy':
+      return cities.filter(city => city.population >= 1000000);
+    case 'medium':
+      return cities.filter(city => city.population >= 500000);
+    case 'hard':
+      return cities.filter(city => city.population >= 100000);
+    default:
+      return cities;
+  }
+};
+
+export const getRandomCity = (difficulty: Difficulty = 'medium'): City => {
+  const availableCities = getCitiesByDifficulty(difficulty);
+  return availableCities[Math.floor(Math.random() * availableCities.length)];
 };

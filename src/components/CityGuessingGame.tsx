@@ -1,17 +1,20 @@
 
 import React, { useState, useEffect } from 'react';
-import { City, getRandomCity } from '../data/cities';
+import { City, getRandomCity, Difficulty } from '../data/cities';
 import CityMap from './CityMap';
 import Leaderboard, { LeaderboardEntry } from './Leaderboard';
-import PlayerNameInput from './PlayerNameInput';
+import StartScreen from './StartScreen';
 import FloatingGuessInput from './FloatingGuessInput';
 import FloatingStats from './FloatingStats';
 import FloatingControls from './FloatingControls';
 import { toast } from 'sonner';
 
 const CityGuessingGame: React.FC = () => {
+  const [gameStarted, setGameStarted] = useState(false);
   const [playerName, setPlayerName] = useState<string>('');
-  const [currentCity, setCurrentCity] = useState<City>(getRandomCity());
+  const [difficulty, setDifficulty] = useState<Difficulty>('medium');
+  const [mapView, setMapView] = useState<'satellite' | 'vector'>('satellite');
+  const [currentCity, setCurrentCity] = useState<City | null>(null);
   const [gameState, setGameState] = useState<'guessing' | 'correct' | 'incorrect'>('guessing');
   const [score, setScore] = useState(0);
   const [totalGuesses, setTotalGuesses] = useState(0);
@@ -33,7 +36,28 @@ const CityGuessingGame: React.FC = () => {
     localStorage.setItem('cityExplorerLeaderboard', JSON.stringify(leaderboard));
   }, [leaderboard]);
 
+  const startGame = (name: string, selectedDifficulty: Difficulty, selectedMapView: 'satellite' | 'vector') => {
+    setPlayerName(name);
+    setDifficulty(selectedDifficulty);
+    setMapView(selectedMapView);
+    setCurrentCity(getRandomCity(selectedDifficulty));
+    setGameStarted(true);
+    setScore(0);
+    setTotalGuesses(0);
+    setCurrentRound(1);
+    setGameState('guessing');
+    setShowAnswer(false);
+    toast.success(`Welcome ${name}! Good luck exploring!`);
+  };
+
+  const toggleMapView = () => {
+    setMapView(prev => prev === 'satellite' ? 'vector' : 'satellite');
+    toast.success(`Switched to ${mapView === 'satellite' ? 'vector' : 'satellite'} view!`);
+  };
+
   const checkGuess = (guess: string) => {
+    if (!currentCity) return;
+
     const normalizedGuess = guess.toLowerCase().trim();
     const normalizedCity = currentCity.name.toLowerCase().trim();
     const normalizedCountry = currentCity.country.toLowerCase().trim();
@@ -49,23 +73,23 @@ const CityGuessingGame: React.FC = () => {
       setScore(prev => prev + 1);
       setGameState('correct');
       setShowAnswer(true);
-      toast.success(`Correct! It's ${currentCity.name}, ${currentCity.country}!`);
+      toast.success(`CORRECT! It's ${currentCity.name}, ${currentCity.country}!`);
     } else {
       setGameState('incorrect');
       setShowAnswer(true);
-      toast.error(`Incorrect! The answer was ${currentCity.name}, ${currentCity.country}`);
+      toast.error(`WRONG! The answer was ${currentCity.name}, ${currentCity.country}`);
     }
   };
 
   const nextRound = () => {
-    setCurrentCity(getRandomCity());
+    setCurrentCity(getRandomCity(difficulty));
     setGameState('guessing');
     setShowAnswer(false);
     setCurrentRound(prev => prev + 1);
   };
 
   const resetGame = () => {
-    setCurrentCity(getRandomCity());
+    setCurrentCity(getRandomCity(difficulty));
     setGameState('guessing');
     setShowAnswer(false);
     setScore(0);
@@ -96,9 +120,16 @@ const CityGuessingGame: React.FC = () => {
             accuracy: Math.max(existingEntry.accuracy, accuracy),
             gamesPlayed: existingEntry.gamesPlayed + (currentRound - 1)
           };
-          return updatedLeaderboard;
+          return updatedLeaderboard.sort((a, b) => {
+            if (b.score !== a.score) return b.score - a.score;
+            return b.accuracy - a.accuracy;
+          });
         } else {
-          return [...prev, newEntry];
+          const newLeaderboard = [...prev, newEntry];
+          return newLeaderboard.sort((a, b) => {
+            if (b.score !== a.score) return b.score - a.score;
+            return b.accuracy - a.accuracy;
+          });
         }
       });
     }
@@ -107,47 +138,63 @@ const CityGuessingGame: React.FC = () => {
     toast.success('Game ended! Check the leaderboard to see your ranking.');
   };
 
-  const handlePlayerSet = (name: string) => {
-    setPlayerName(name);
+  const backToMenu = () => {
+    setGameStarted(false);
+    setShowLeaderboard(false);
+    setCurrentCity(null);
+    setGameState('guessing');
+    setShowAnswer(false);
   };
 
-  if (!playerName) {
-    return <PlayerNameInput onPlayerSet={handlePlayerSet} />;
+  // Start screen
+  if (!gameStarted) {
+    return <StartScreen onStartGame={startGame} leaderboard={leaderboard} />;
   }
 
+  // Leaderboard screen
   if (showLeaderboard) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 p-4">
+      <div className="min-h-screen neo-gradient-bg p-4">
         <div className="max-w-4xl mx-auto space-y-6">
           <div className="text-center space-y-4">
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-              City Explorer Leaderboard
+            <h1 className="text-6xl font-black neo-text-shadow text-white uppercase tracking-wider">
+              HALL OF FAME
             </h1>
-            <div className="flex justify-center gap-2">
+            <div className="flex justify-center gap-4">
               <button 
                 onClick={() => setShowLeaderboard(false)}
-                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                className="neo-button-secondary px-6 py-3"
               >
-                Back to Game
+                BACK TO GAME
               </button>
               <button 
                 onClick={resetGame}
-                className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+                className="neo-button-accent px-6 py-3"
               >
-                New Game
+                NEW GAME
+              </button>
+              <button 
+                onClick={backToMenu}
+                className="neo-button px-6 py-3"
+              >
+                MAIN MENU
               </button>
             </div>
           </div>
-          <Leaderboard entries={leaderboard} />
+          <div className="neo-card bg-white/95">
+            <Leaderboard entries={leaderboard} />
+          </div>
         </div>
       </div>
     );
   }
 
+  if (!currentCity) return null;
+
   return (
     <div className="relative w-full h-screen overflow-hidden">
       {/* Full-screen map */}
-      <CityMap city={currentCity} showAnswer={showAnswer} />
+      <CityMap city={currentCity} showAnswer={showAnswer} mapView={mapView} />
       
       {/* Floating UI components */}
       <FloatingStats
@@ -155,12 +202,16 @@ const CityGuessingGame: React.FC = () => {
         totalGuesses={totalGuesses}
         currentRound={currentRound}
         playerName={playerName}
+        difficulty={difficulty}
       />
       
       <FloatingControls
         onShowLeaderboard={() => setShowLeaderboard(true)}
         onResetGame={resetGame}
         onEndGame={endGame}
+        onToggleMapView={toggleMapView}
+        onBackToMenu={backToMenu}
+        mapView={mapView}
       />
       
       <FloatingGuessInput
