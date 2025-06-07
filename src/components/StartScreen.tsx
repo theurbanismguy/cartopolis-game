@@ -31,6 +31,10 @@ const StartScreen: React.FC<StartScreenProps> = ({ onStartGame, leaderboard }) =
     { lat: 30.0444, lng: 31.2357, name: "Cairo" },
     { lat: 48.8566, lng: 2.3522, name: "Paris" },
     { lat: 19.0760, lng: 72.8777, name: "Mumbai" },
+    { lat: 55.7558, lng: 37.6176, name: "Moscow" },
+    { lat: -34.6037, lng: -58.3816, name: "Buenos Aires" },
+    { lat: 1.3521, lng: 103.8198, name: "Singapore" },
+    { lat: 39.9042, lng: 116.4074, name: "Beijing" }
   ];
 
   useEffect(() => {
@@ -51,7 +55,9 @@ const StartScreen: React.FC<StartScreenProps> = ({ onStartGame, leaderboard }) =
       dragging: false,
       attributionControl: false,
       keyboard: false,
-      touchZoom: false
+      touchZoom: false,
+      boxZoom: false,
+      tap: false
     });
 
     // Add tile layer based on selected view
@@ -67,30 +73,39 @@ const StartScreen: React.FC<StartScreenProps> = ({ onStartGame, leaderboard }) =
     tileLayer.addTo(map);
     mapInstanceRef.current = map;
 
-    // Animate through landmarks
+    // Animate through landmarks with smooth transitions
     let currentLandmarkIndex = 0;
+    let animationTimeout: NodeJS.Timeout;
+
     const animateToNextLandmark = () => {
       if (!mapInstanceRef.current) return;
       
       const landmark = landmarks[currentLandmarkIndex];
-      const randomZoom = 4 + Math.random() * 3; // Zoom between 4-7
+      // Add some randomness to the zoom level and slight position offset
+      const randomZoom = 4 + Math.random() * 4; // Zoom between 4-8
+      const latOffset = (Math.random() - 0.5) * 0.5; // Small random offset
+      const lngOffset = (Math.random() - 0.5) * 0.5;
       
-      mapInstanceRef.current.flyTo([landmark.lat, landmark.lng], randomZoom, {
-        duration: 4,
-        easeLinearity: 0.1
+      mapInstanceRef.current.flyTo([
+        landmark.lat + latOffset, 
+        landmark.lng + lngOffset
+      ], randomZoom, {
+        duration: 6, // Longer, smoother transitions
+        easeLinearity: 0.05 // Smoother easing
       });
       
       currentLandmarkIndex = (currentLandmarkIndex + 1) % landmarks.length;
+      
+      // Schedule next animation with slight randomness
+      const nextDelay = 6000 + Math.random() * 2000; // 6-8 seconds
+      animationTimeout = setTimeout(animateToNextLandmark, nextDelay);
     };
 
-    // Start animation immediately
-    animateToNextLandmark();
-    
-    // Continue animation every 5 seconds
-    const interval = setInterval(animateToNextLandmark, 5000);
+    // Start animation after a brief delay
+    animationTimeout = setTimeout(animateToNextLandmark, 1000);
 
     return () => {
-      clearInterval(interval);
+      clearTimeout(animationTimeout);
       if (mapInstanceRef.current) {
         mapInstanceRef.current.remove();
         mapInstanceRef.current = null;
@@ -118,14 +133,27 @@ const StartScreen: React.FC<StartScreenProps> = ({ onStartGame, leaderboard }) =
 
   return (
     <div className="relative w-full h-screen overflow-hidden">
-      {/* Animated background map */}
-      <div ref={mapRef} className="absolute inset-0 w-full h-full" />
+      {/* Animated background map - stays in background */}
+      <div 
+        ref={mapRef} 
+        className="absolute inset-0 w-full h-full"
+        style={{ 
+          zIndex: 0,
+          pointerEvents: 'none'
+        }}
+      />
       
-      {/* Dark overlay */}
-      <div className="absolute inset-0 bg-black/40" />
+      {/* Dark overlay for better content readability */}
+      <div 
+        className="absolute inset-0 bg-black/60"
+        style={{ zIndex: 1 }}
+      />
       
-      {/* Content overlay */}
-      <div className="relative z-10 h-full flex flex-col">
+      {/* Content overlay - interactive elements */}
+      <div 
+        className="relative h-full flex flex-col"
+        style={{ zIndex: 10 }}
+      >
         {/* Header */}
         <div className="flex-1 flex items-center justify-center p-6">
           <div className="max-w-6xl w-full grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
