@@ -25,16 +25,16 @@ const CityMap: React.FC<CityMapProps> = ({ city, showAnswer }) => {
     // Create map centered on the city with appropriate zoom level
     const map = L.map(mapRef.current, {
       center: [city.lat, city.lng],
-      zoom: 11, // City-level zoom
-      zoomControl: true,
+      zoom: 11,
+      zoomControl: false, // We'll add custom controls later
       scrollWheelZoom: true,
       doubleClickZoom: true,
-      dragging: true
+      dragging: true,
+      attributionControl: false // Hide attribution for cleaner look
     });
 
-    // Add OpenStreetMap tile layer without labels
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="https://openstreetmap.org">OpenStreetMap</a> contributors',
+    // Add ESRI World Imagery (satellite) tile layer - no labels
+    L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
       maxZoom: 18,
     }).addTo(map);
 
@@ -45,18 +45,19 @@ const CityMap: React.FC<CityMapProps> = ({ city, showAnswer }) => {
       // Custom red marker icon
       const redIcon = L.divIcon({
         className: 'custom-marker',
-        html: '<div class="w-6 h-6 bg-red-500 rounded-full border-2 border-white shadow-lg animate-pulse"></div>',
-        iconSize: [24, 24],
-        iconAnchor: [12, 12]
+        html: '<div class="w-8 h-8 bg-red-500 rounded-full border-4 border-white shadow-lg animate-pulse"></div>',
+        iconSize: [32, 32],
+        iconAnchor: [16, 16]
       });
 
       const marker = L.marker([city.lat, city.lng], { icon: redIcon }).addTo(map);
       
       // Add popup with city information
       marker.bindPopup(`
-        <div class="text-center font-semibold">
-          <div class="text-lg">${city.name}</div>
+        <div class="text-center font-semibold bg-white/90 backdrop-blur-sm rounded-lg p-2">
+          <div class="text-lg font-bold text-gray-800">${city.name}</div>
           <div class="text-sm text-gray-600">${city.country}</div>
+          <div class="text-xs text-gray-500">${city.population.toLocaleString()} people</div>
         </div>
       `).openPopup();
 
@@ -73,13 +74,17 @@ const CityMap: React.FC<CityMapProps> = ({ city, showAnswer }) => {
   }, [city, showAnswer]);
 
   return (
-    <div className="w-full h-96 rounded-lg shadow-lg overflow-hidden">
-      <div ref={mapRef} className="w-full h-full rounded-lg" />
+    <div className="fixed inset-0 w-full h-full">
+      <div ref={mapRef} className="w-full h-full" />
       <style dangerouslySetInnerHTML={{
         __html: `
           .custom-marker {
             background: transparent !important;
             border: none !important;
+          }
+          .leaflet-popup-content-wrapper {
+            border-radius: 8px !important;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3) !important;
           }
         `
       }} />
