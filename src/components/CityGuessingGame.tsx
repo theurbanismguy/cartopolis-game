@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { City, getRandomCity, Difficulty } from '../data/cities';
 import CityMap from './CityMap';
@@ -8,6 +7,9 @@ import FloatingGuessInput from './FloatingGuessInput';
 import FloatingStats from './FloatingStats';
 import FloatingControls from './FloatingControls';
 import GameEnhancedStats from './GameEnhancedStats';
+import MobileGameStats from './MobileGameStats';
+import MobileGameControls from './MobileGameControls';
+import WikipediaInfo from './WikipediaInfo';
 import { toast } from 'sonner';
 
 const CityGuessingGame: React.FC = () => {
@@ -22,6 +24,7 @@ const CityGuessingGame: React.FC = () => {
   const [showAnswer, setShowAnswer] = useState(false);
   const [showLeaderboard, setShowLeaderboard] = useState(false);
   const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([]);
+  const [showWikipedia, setShowWikipedia] = useState(false);
   
   // Enhanced gaming features
   const [currentStreak, setCurrentStreak] = useState(0);
@@ -110,6 +113,7 @@ const CityGuessingGame: React.FC = () => {
       setTotalTimeBonus(prev => prev + timeBonus);
       setGameState('correct');
       setShowAnswer(true);
+      setShowWikipedia(true);
       
       let message = `CORRECT! +${roundScore} points`;
       if (timeBonus > 0) message += ` (+${timeBonus} speed bonus)`;
@@ -120,6 +124,7 @@ const CityGuessingGame: React.FC = () => {
       setCurrentStreak(0);
       setGameState('incorrect');
       setShowAnswer(true);
+      setShowWikipedia(true);
       toast.error(`WRONG! The answer was ${currentCity.name}, ${currentCity.country}`);
     }
   };
@@ -128,6 +133,7 @@ const CityGuessingGame: React.FC = () => {
     setCurrentCity(getRandomCity(difficulty));
     setGameState('guessing');
     setShowAnswer(false);
+    setShowWikipedia(false);
     setCurrentRound(prev => prev + 1);
     setHintsUsed(0);
     setRoundStartTime(Date.now());
@@ -137,6 +143,7 @@ const CityGuessingGame: React.FC = () => {
     setCurrentCity(getRandomCity(difficulty));
     setGameState('guessing');
     setShowAnswer(false);
+    setShowWikipedia(false);
     setScore(0);
     setTotalGuesses(0);
     setCurrentRound(1);
@@ -270,8 +277,8 @@ const CityGuessingGame: React.FC = () => {
       {/* Full-screen map */}
       <CityMap city={currentCity} showAnswer={showAnswer} difficulty={difficulty} />
       
-      {/* Enhanced floating stats */}
-      <GameEnhancedStats
+      {/* Mobile-optimized stats - only show on mobile */}
+      <MobileGameStats
         score={score}
         totalGuesses={totalGuesses}
         currentRound={currentRound}
@@ -281,8 +288,23 @@ const CityGuessingGame: React.FC = () => {
         bestStreak={bestStreak}
         timeBonus={totalTimeBonus}
       />
+
+      {/* Desktop stats - hide on mobile */}
+      <div className="hidden md:block">
+        <GameEnhancedStats
+          score={score}
+          totalGuesses={totalGuesses}
+          currentRound={currentRound}
+          playerName={playerName}
+          difficulty={difficulty}
+          currentStreak={currentStreak}
+          bestStreak={bestStreak}
+          timeBonus={totalTimeBonus}
+        />
+      </div>
       
-      <FloatingControls
+      {/* Mobile controls - only show on mobile */}
+      <MobileGameControls
         onShowLeaderboard={() => setShowLeaderboard(true)}
         onResetGame={resetGame}
         onEndGame={endGame}
@@ -291,6 +313,19 @@ const CityGuessingGame: React.FC = () => {
         hintsUsed={hintsUsed}
         gameState={gameState}
       />
+
+      {/* Desktop controls - hide on mobile */}
+      <div className="hidden md:block">
+        <FloatingControls
+          onShowLeaderboard={() => setShowLeaderboard(true)}
+          onResetGame={resetGame}
+          onEndGame={endGame}
+          onBackToMenu={backToMenu}
+          onUseHint={useHint}
+          hintsUsed={hintsUsed}
+          gameState={gameState}
+        />
+      </div>
       
       <FloatingGuessInput
         onGuess={checkGuess}
@@ -298,6 +333,13 @@ const CityGuessingGame: React.FC = () => {
         gameState={gameState}
         onNextRound={nextRound}
       />
+
+      {/* Wikipedia Info */}
+      {showWikipedia && currentCity && (
+        <div className="fixed inset-x-4 bottom-20 md:bottom-4 z-50">
+          <WikipediaInfo city={currentCity} show={showWikipedia} />
+        </div>
+      )}
     </div>
   );
 };

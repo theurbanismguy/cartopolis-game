@@ -40,44 +40,44 @@ const FloatingGuessInput: React.FC<FloatingGuessInputProps> = ({
   }, [gameState, onNextRound]);
 
   return (
-    <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-50">
-      <div className="neo-card bg-white/95 backdrop-blur-sm min-w-[400px]">
-        <div className="p-4">
+    <div className="fixed bottom-4 left-4 right-4 md:left-1/2 md:right-auto md:transform md:-translate-x-1/2 z-50">
+      <div className="bg-white/95 backdrop-blur-sm border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] md:min-w-[400px]">
+        <div className="p-3 md:p-4">
           {gameState === 'guessing' ? (
-            <form onSubmit={handleSubmit} className="flex gap-3">
-              <Input
+            <form onSubmit={handleSubmit} className="flex gap-2 md:gap-3">
+              <input
                 type="text"
                 placeholder="ENTER CITY NAME..."
                 value={guess}
                 onChange={(e) => setGuess(e.target.value)}
                 disabled={disabled}
-                className="neo-input flex-1"
+                className="flex-1 border-2 border-black bg-white px-3 py-2 md:py-3 font-bold text-sm md:text-base focus:outline-none focus:ring-0 focus:border-accent"
                 autoFocus
               />
               <button 
                 type="submit" 
                 disabled={disabled || !guess.trim()}
-                className="neo-button px-4 flex items-center gap-2"
+                className="bg-primary text-primary-foreground border-2 border-black px-3 md:px-4 flex items-center gap-2 font-bold uppercase text-sm md:text-base shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[1px] hover:translate-y-[1px] transition-all duration-100 active:shadow-none active:translate-x-[2px] active:translate-y-[2px] disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <Send className="w-4 h-4" />
-                GUESS
+                <span className="hidden sm:inline">GUESS</span>
               </button>
             </form>
           ) : (
-            <div className="text-center space-y-4">
-              <div className={`text-2xl font-black uppercase tracking-wider ${
+            <div className="text-center space-y-3 md:space-y-4">
+              <div className={`text-xl md:text-2xl font-black uppercase tracking-wider ${
                 gameState === 'correct' ? 'text-green-600' : 'text-red-600'
               }`}>
                 {gameState === 'correct' ? '🎉 CORRECT!' : '❌ WRONG!'}
               </div>
               <button 
                 onClick={onNextRound} 
-                className="w-full neo-button-accent text-lg py-4 flex items-center justify-center gap-2"
+                className="w-full bg-accent text-accent-foreground border-2 border-black text-base md:text-lg py-3 md:py-4 flex items-center justify-center gap-2 font-bold uppercase tracking-wider shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[1px] hover:translate-y-[1px] transition-all duration-100 active:shadow-none active:translate-x-[2px] active:translate-y-[2px]"
               >
                 NEXT CITY
                 <ArrowRight className="w-5 h-5" />
               </button>
-              <p className="text-sm font-bold uppercase text-muted-foreground">
+              <p className="text-xs md:text-sm font-bold uppercase text-muted-foreground">
                 Press Enter for next city
               </p>
             </div>
