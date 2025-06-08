@@ -1,3 +1,4 @@
+
 import React, { useEffect, useRef, useState } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -18,21 +19,22 @@ const StartScreen: React.FC<StartScreenProps> = ({ onStartGame, leaderboard }) =
   const mapInstanceRef = useRef<L.Map | null>(null);
   const [playerName, setPlayerName] = useState('');
   const [difficulty, setDifficulty] = useState<Difficulty>('medium');
+  const [mapOpacity, setMapOpacity] = useState(1);
 
-  // Famous landmarks for the animated tour
-  const landmarks = [
-    { lat: 35.6762, lng: 139.6503, name: "Tokyo" },
-    { lat: 40.7128, lng: -74.0060, name: "New York" },
-    { lat: 51.5074, lng: -0.1278, name: "London" },
-    { lat: -33.8688, lng: 151.2093, name: "Sydney" },
-    { lat: -22.9068, lng: -43.1729, name: "Rio de Janeiro" },
-    { lat: 30.0444, lng: 31.2357, name: "Cairo" },
-    { lat: 48.8566, lng: 2.3522, name: "Paris" },
-    { lat: 19.0760, lng: 72.8777, name: "Mumbai" },
-    { lat: 55.7558, lng: 37.6176, name: "Moscow" },
-    { lat: -34.6037, lng: -58.3816, name: "Buenos Aires" },
-    { lat: 1.3521, lng: 103.8198, name: "Singapore" },
-    { lat: 39.9042, lng: 116.4074, name: "Beijing" }
+  // Curated list of visually interesting cities for backgrounds
+  const backgroundCities = [
+    { lat: 40.7128, lng: -74.0060, name: "New York" }, // Manhattan island
+    { lat: -22.9068, lng: -43.1729, name: "Rio de Janeiro" }, // Christ the Redeemer area
+    { lat: 48.8566, lng: 2.3522, name: "Paris" }, // Seine River curves
+    { lat: 35.6762, lng: 139.6503, name: "Tokyo" }, // Tokyo Bay
+    { lat: 51.5074, lng: -0.1278, name: "London" }, // Thames River
+    { lat: -33.8688, lng: 151.2093, name: "Sydney" }, // Harbor and Opera House
+    { lat: 37.7749, lng: -122.4194, name: "San Francisco" }, // Bay and Golden Gate
+    { lat: 55.7558, lng: 37.6176, name: "Moscow" }, // Red Square area
+    { lat: 30.0444, lng: 31.2357, name: "Cairo" }, // Nile River
+    { lat: 1.3521, lng: 103.8198, name: "Singapore" }, // Island nation
+    { lat: 25.2048, lng: 55.2708, name: "Dubai" }, // Palm Jumeirah
+    { lat: -34.6037, lng: -58.3816, name: "Buenos Aires" } // Rio de la Plata
   ];
 
   useEffect(() => {
@@ -43,10 +45,12 @@ const StartScreen: React.FC<StartScreenProps> = ({ onStartGame, leaderboard }) =
       mapInstanceRef.current.remove();
     }
 
-    // Create map
+    // Create map with static initial city
+    const initialCity = backgroundCities[Math.floor(Math.random() * backgroundCities.length)];
+    
     const map = L.map(mapRef.current, {
-      center: [20, 0],
-      zoom: 3,
+      center: [initialCity.lat, initialCity.lng],
+      zoom: 12,
       zoomControl: false,
       scrollWheelZoom: false,
       doubleClickZoom: false,
@@ -65,39 +69,32 @@ const StartScreen: React.FC<StartScreenProps> = ({ onStartGame, leaderboard }) =
     tileLayer.addTo(map);
     mapInstanceRef.current = map;
 
-    // Animate through landmarks with smooth transitions
-    let currentLandmarkIndex = 0;
-    let animationTimeout: NodeJS.Timeout;
-
-    const animateToNextLandmark = () => {
+    // Function to switch to a random city with fade transition
+    const switchToRandomCity = () => {
       if (!mapInstanceRef.current) return;
       
-      const landmark = landmarks[currentLandmarkIndex];
-      // Add some randomness to the zoom level and slight position offset
-      const randomZoom = 4 + Math.random() * 4; // Zoom between 4-8
-      const latOffset = (Math.random() - 0.5) * 0.5; // Small random offset
-      const lngOffset = (Math.random() - 0.5) * 0.5;
+      // Start fade out
+      setMapOpacity(0.3);
       
-      mapInstanceRef.current.flyTo([
-        landmark.lat + latOffset, 
-        landmark.lng + lngOffset
-      ], randomZoom, {
-        duration: 6, // Longer, smoother transitions
-        easeLinearity: 0.05 // Smoother easing
-      });
-      
-      currentLandmarkIndex = (currentLandmarkIndex + 1) % landmarks.length;
-      
-      // Schedule next animation with slight randomness
-      const nextDelay = 6000 + Math.random() * 2000; // 6-8 seconds
-      animationTimeout = setTimeout(animateToNextLandmark, nextDelay);
+      setTimeout(() => {
+        if (!mapInstanceRef.current) return;
+        
+        // Pick a random city different from current
+        const randomCity = backgroundCities[Math.floor(Math.random() * backgroundCities.length)];
+        
+        // Set new view instantly (no animation)
+        mapInstanceRef.current.setView([randomCity.lat, randomCity.lng], 12);
+        
+        // Fade back in
+        setMapOpacity(1);
+      }, 800); // Wait for fade out to complete
     };
 
-    // Start animation after a brief delay
-    animationTimeout = setTimeout(animateToNextLandmark, 1000);
+    // Switch cities every 12 seconds
+    const switchInterval = setInterval(switchToRandomCity, 12000);
 
     return () => {
-      clearTimeout(animationTimeout);
+      clearInterval(switchInterval);
       if (mapInstanceRef.current) {
         mapInstanceRef.current.remove();
         mapInstanceRef.current = null;
@@ -125,19 +122,21 @@ const StartScreen: React.FC<StartScreenProps> = ({ onStartGame, leaderboard }) =
 
   return (
     <div className="relative w-full h-screen overflow-hidden">
-      {/* Animated background map - stays in background */}
+      {/* Static background map with fade transitions */}
       <div 
         ref={mapRef} 
-        className="absolute inset-0 w-full h-full"
+        className="absolute inset-0 w-full h-full transition-opacity duration-800 ease-in-out"
         style={{ 
           zIndex: 0,
-          pointerEvents: 'none'
+          pointerEvents: 'none',
+          opacity: mapOpacity,
+          filter: 'blur(1px)'
         }}
       />
       
-      {/* Dark overlay for better content readability */}
+      {/* Darker overlay for better content readability */}
       <div 
-        className="absolute inset-0 bg-black/60"
+        className="absolute inset-0 bg-black/75"
         style={{ zIndex: 1 }}
       />
       
