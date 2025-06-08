@@ -7,9 +7,9 @@ import FloatingGuessInput from './FloatingGuessInput';
 import FloatingStats from './FloatingStats';
 import FloatingControls from './FloatingControls';
 import GameEnhancedStats from './GameEnhancedStats';
-import MobileGameStats from './MobileGameStats';
-import MobileGameControls from './MobileGameControls';
-import WikipediaInfo from './WikipediaInfo';
+import TopBar from './TopBar';
+import CompactWikipediaCard from './CompactWikipediaCard';
+import { useGameState } from './GameHooks';
 import { toast } from 'sonner';
 
 const CityGuessingGame: React.FC = () => {
@@ -18,20 +18,32 @@ const CityGuessingGame: React.FC = () => {
   const [difficulty, setDifficulty] = useState<Difficulty>('medium');
   const [currentCity, setCurrentCity] = useState<City | null>(null);
   const [gameState, setGameState] = useState<'guessing' | 'correct' | 'incorrect'>('guessing');
-  const [score, setScore] = useState(0);
-  const [totalGuesses, setTotalGuesses] = useState(0);
-  const [currentRound, setCurrentRound] = useState(1);
   const [showAnswer, setShowAnswer] = useState(false);
   const [showLeaderboard, setShowLeaderboard] = useState(false);
   const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([]);
   const [showWikipedia, setShowWikipedia] = useState(false);
   
-  // Enhanced gaming features
-  const [currentStreak, setCurrentStreak] = useState(0);
-  const [bestStreak, setBestStreak] = useState(0);
-  const [hintsUsed, setHintsUsed] = useState(0);
-  const [roundStartTime, setRoundStartTime] = useState<number>(0);
-  const [totalTimeBonus, setTotalTimeBonus] = useState(0);
+  const {
+    score,
+    setScore,
+    totalGuesses,
+    setTotalGuesses,
+    currentRound,
+    currentStreak,
+    setCurrentStreak,
+    bestStreak,
+    setBestStreak,
+    hintsUsed,
+    setHintsUsed,
+    roundStartTime,
+    setRoundStartTime,
+    totalTimeBonus,
+    setTotalTimeBonus,
+    resetGame: resetGameState,
+    nextRound: nextRoundState,
+    calculateTimeBonus,
+    getStreakMultiplier
+  } = useGameState();
 
   // Load leaderboard from localStorage on component mount
   useEffect(() => {
@@ -51,34 +63,11 @@ const CityGuessingGame: React.FC = () => {
     setDifficulty(selectedDifficulty);
     setCurrentCity(getRandomCity(selectedDifficulty));
     setGameStarted(true);
-    setScore(0);
-    setTotalGuesses(0);
-    setCurrentRound(1);
     setGameState('guessing');
     setShowAnswer(false);
-    setCurrentStreak(0);
-    setBestStreak(0);
-    setHintsUsed(0);
-    setTotalTimeBonus(0);
+    resetGameState();
     setRoundStartTime(Date.now());
     toast.success(`Welcome to Cartopolis, ${name}! Good luck exploring!`);
-  };
-
-  const calculateTimeBonus = (startTime: number, difficulty: Difficulty): number => {
-    const timeTaken = (Date.now() - startTime) / 1000; // in seconds
-    const baseTime = difficulty === 'easy' ? 60 : difficulty === 'medium' ? 45 : 30;
-    
-    if (timeTaken <= baseTime) {
-      return Math.max(0, Math.floor((baseTime - timeTaken) / 5)); // 1 point per 5 seconds saved
-    }
-    return 0;
-  };
-
-  const getStreakMultiplier = (streak: number): number => {
-    if (streak >= 10) return 5;
-    if (streak >= 5) return 3;
-    if (streak >= 3) return 2;
-    return 1;
   };
 
   const checkGuess = (guess: string) => {
@@ -97,7 +86,7 @@ const CityGuessingGame: React.FC = () => {
     
     if (isExactMatch || isPartialMatch) {
       // Calculate score with bonuses
-      let basePoints = isExactMatch ? 10 : 7; // Exact match bonus
+      let basePoints = isExactMatch ? 10 : 7;
       const timeBonus = calculateTimeBonus(roundStartTime, difficulty);
       const streakMultiplier = getStreakMultiplier(currentStreak);
       const hintPenalty = hintsUsed * 2;
@@ -134,9 +123,7 @@ const CityGuessingGame: React.FC = () => {
     setGameState('guessing');
     setShowAnswer(false);
     setShowWikipedia(false);
-    setCurrentRound(prev => prev + 1);
-    setHintsUsed(0);
-    setRoundStartTime(Date.now());
+    nextRoundState();
   };
 
   const resetGame = () => {
@@ -144,14 +131,7 @@ const CityGuessingGame: React.FC = () => {
     setGameState('guessing');
     setShowAnswer(false);
     setShowWikipedia(false);
-    setScore(0);
-    setTotalGuesses(0);
-    setCurrentRound(1);
-    setCurrentStreak(0);
-    setBestStreak(0);
-    setHintsUsed(0);
-    setTotalTimeBonus(0);
-    setRoundStartTime(Date.now());
+    resetGameState();
     toast.success('Game reset! Good luck!');
   };
 
@@ -277,17 +257,22 @@ const CityGuessingGame: React.FC = () => {
       {/* Full-screen map */}
       <CityMap city={currentCity} showAnswer={showAnswer} difficulty={difficulty} />
       
-      {/* Mobile-optimized stats - only show on mobile */}
-      <MobileGameStats
-        score={score}
-        totalGuesses={totalGuesses}
-        currentRound={currentRound}
-        playerName={playerName}
-        difficulty={difficulty}
-        currentStreak={currentStreak}
-        bestStreak={bestStreak}
-        timeBonus={totalTimeBonus}
-      />
+      {/* Mobile TopBar - only show on mobile */}
+      <div className="md:hidden">
+        <TopBar
+          playerName={playerName}
+          score={score}
+          currentRound={currentRound}
+          currentStreak={currentStreak}
+          onShowLeaderboard={() => setShowLeaderboard(true)}
+          onResetGame={resetGame}
+          onEndGame={endGame}
+          onBackToMenu={backToMenu}
+          onUseHint={useHint}
+          hintsUsed={hintsUsed}
+          gameState={gameState}
+        />
+      </div>
 
       {/* Desktop stats - hide on mobile */}
       <div className="hidden md:block">
@@ -302,17 +287,6 @@ const CityGuessingGame: React.FC = () => {
           timeBonus={totalTimeBonus}
         />
       </div>
-      
-      {/* Mobile controls - only show on mobile */}
-      <MobileGameControls
-        onShowLeaderboard={() => setShowLeaderboard(true)}
-        onResetGame={resetGame}
-        onEndGame={endGame}
-        onBackToMenu={backToMenu}
-        onUseHint={useHint}
-        hintsUsed={hintsUsed}
-        gameState={gameState}
-      />
 
       {/* Desktop controls - hide on mobile */}
       <div className="hidden md:block">
@@ -334,11 +308,13 @@ const CityGuessingGame: React.FC = () => {
         onNextRound={nextRound}
       />
 
-      {/* Wikipedia Info */}
+      {/* Compact Wikipedia Card */}
       {showWikipedia && currentCity && (
-        <div className="fixed inset-x-4 bottom-20 md:bottom-4 z-50">
-          <WikipediaInfo city={currentCity} show={showWikipedia} />
-        </div>
+        <CompactWikipediaCard 
+          city={currentCity} 
+          show={showWikipedia} 
+          onClose={() => setShowWikipedia(false)}
+        />
       )}
     </div>
   );

@@ -1,7 +1,5 @@
 
 import React, { useState, useEffect } from 'react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Send, ArrowRight } from 'lucide-react';
 
 interface FloatingGuessInputProps {
@@ -40,7 +38,7 @@ const FloatingGuessInput: React.FC<FloatingGuessInputProps> = ({
   }, [gameState, onNextRound]);
 
   return (
-    <div className="fixed bottom-4 left-4 right-4 md:left-1/2 md:right-auto md:transform md:-translate-x-1/2 z-50">
+    <div className="fixed bottom-4 left-4 right-4 md:left-1/2 md:right-auto md:transform md:-translate-x-1/2 z-40 mt-12 md:mt-0">
       <div className="bg-white/95 backdrop-blur-sm border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] md:min-w-[400px]">
         <div className="p-3 md:p-4">
           {gameState === 'guessing' ? (
