@@ -1,13 +1,15 @@
 
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Trophy, Medal, Award } from 'lucide-react';
+import { Trophy, Medal, Award, Flame, Clock } from 'lucide-react';
 
 export interface LeaderboardEntry {
   name: string;
   score: number;
   accuracy: number;
   gamesPlayed: number;
+  streak?: number;
+  timeBonus?: number;
 }
 
 interface LeaderboardProps {
@@ -17,7 +19,7 @@ interface LeaderboardProps {
 const Leaderboard: React.FC<LeaderboardProps> = ({ entries }) => {
   const sortedEntries = [...entries].sort((a, b) => {
     if (b.score !== a.score) return b.score - a.score;
-    return b.accuracy - a.accuracy;
+    return (b.streak || 0) - (a.streak || 0);
   });
 
   const getIcon = (index: number) => {
@@ -33,38 +35,65 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ entries }) => {
     }
   };
 
+  const getBadgeColor = (index: number) => {
+    switch (index) {
+      case 0: return 'bg-yellow-400 text-black';
+      case 1: return 'bg-gray-300 text-black';
+      case 2: return 'bg-amber-600 text-white';
+      default: return 'bg-white text-black';
+    }
+  };
+
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <Trophy className="w-5 h-5 text-primary" />
-          Leaderboard
+    <Card className="neo-card">
+      <CardHeader className="border-b-4 border-black">
+        <CardTitle className="text-2xl font-black uppercase tracking-wider flex items-center gap-2">
+          <Trophy className="w-6 h-6 text-accent" />
+          CARTOPOLIS CHAMPIONS
         </CardTitle>
       </CardHeader>
-      <CardContent>
+      <CardContent className="p-0">
         {sortedEntries.length === 0 ? (
-          <p className="text-muted-foreground text-center py-4">No players yet!</p>
+          <p className="text-center text-muted-foreground font-bold uppercase tracking-wider py-8 text-lg">
+            NO EXPLORERS YET!
+            <br />
+            BE THE FIRST TO CONQUER THE WORLD!
+          </p>
         ) : (
-          <div className="space-y-2">
+          <div className="space-y-0">
             {sortedEntries.slice(0, 10).map((entry, index) => (
               <div
                 key={`${entry.name}-${index}`}
-                className={`flex items-center justify-between p-3 rounded-lg ${
-                  index < 3 ? 'bg-gradient-to-r from-primary/10 to-secondary/10' : 'bg-muted/50'
-                }`}
+                className={`flex items-center justify-between p-4 border-b-2 border-black last:border-b-0 ${
+                  index < 3 ? 'bg-gradient-to-r from-secondary/20 to-accent/20' : 'bg-muted/30'
+                } ${index === 0 ? 'border-4 border-accent' : ''}`}
               >
-                <div className="flex items-center gap-3">
-                  {getIcon(index)}
+                <div className="flex items-center gap-4">
+                  <div className={`w-10 h-10 border-4 border-black flex items-center justify-center font-black text-lg ${getBadgeColor(index)}`}>
+                    {index < 3 ? getIcon(index) : index + 1}
+                  </div>
                   <div>
-                    <div className="font-semibold">{entry.name}</div>
-                    <div className="text-sm text-muted-foreground">
-                      {entry.gamesPlayed} games played
+                    <div className="font-black uppercase text-lg">{entry.name}</div>
+                    <div className="text-sm text-muted-foreground uppercase font-bold flex items-center gap-3">
+                      <span>{entry.gamesPlayed} Games</span>
+                      {(entry.streak && entry.streak > 0) && (
+                        <span className="flex items-center gap-1 text-orange-500">
+                          <Flame className="w-3 h-3" />
+                          {entry.streak} Streak
+                        </span>
+                      )}
+                      {(entry.timeBonus && entry.timeBonus > 0) && (
+                        <span className="flex items-center gap-1 text-blue-500">
+                          <Clock className="w-3 h-3" />
+                          +{entry.timeBonus}
+                        </span>
+                      )}
                     </div>
                   </div>
                 </div>
                 <div className="text-right">
-                  <div className="font-bold text-lg">{entry.score}</div>
-                  <div className="text-sm text-muted-foreground">{entry.accuracy}% accuracy</div>
+                  <div className="font-black text-2xl text-primary">{entry.score}</div>
+                  <div className="text-sm text-muted-foreground font-bold">{entry.accuracy}% ACC</div>
                 </div>
               </div>
             ))}
