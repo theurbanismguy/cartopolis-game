@@ -1,4 +1,3 @@
-
 export interface City {
   name: string;
   country: string;
@@ -163,14 +162,12 @@ export const cities: City[] = [
   { name: "Valletta", country: "Malta", lat: 35.8989, lng: 14.5146, population: 198000, continent: "Europe" }
 ];
 
-export type Difficulty = 'easy' | 'medium' | 'hard';
+export type Difficulty = 'easy' | 'hard';
 
 export const getCitiesByDifficulty = (difficulty: Difficulty): City[] => {
   switch (difficulty) {
     case 'easy':
       return cities.filter(city => city.population >= 1000000);
-    case 'medium':
-      return cities.filter(city => city.population >= 500000);
     case 'hard':
       return cities.filter(city => city.population >= 100000);
     default:
@@ -178,7 +175,18 @@ export const getCitiesByDifficulty = (difficulty: Difficulty): City[] => {
   }
 };
 
-export const getRandomCity = (difficulty: Difficulty = 'medium'): City => {
-  const availableCities = getCitiesByDifficulty(difficulty);
-  return availableCities[Math.floor(Math.random() * availableCities.length)];
+export const getRandomCity = (difficulty: Difficulty): City => {
+  const filteredCities = cities.filter(city => {
+    switch (difficulty) {
+      case 'easy':
+        return city.population >= 1000000; // 1M+ for easy
+      case 'hard':
+        return city.population >= 100000; // 100K+ for hard
+      default:
+        return true;
+    }
+  });
+  
+  const randomIndex = Math.floor(Math.random() * filteredCities.length);
+  return filteredCities[randomIndex];
 };

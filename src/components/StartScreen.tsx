@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef, useState } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -18,7 +17,7 @@ const StartScreen: React.FC<StartScreenProps> = ({ onStartGame, leaderboard }) =
   const mapRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<L.Map | null>(null);
   const [playerName, setPlayerName] = useState('');
-  const [difficulty, setDifficulty] = useState<Difficulty>('medium');
+  const [difficulty, setDifficulty] = useState<Difficulty>('easy');
   const [mapOpacity, setMapOpacity] = useState(1);
 
   // Curated list of visually interesting cities for backgrounds
@@ -112,11 +111,21 @@ const StartScreen: React.FC<StartScreenProps> = ({ onStartGame, leaderboard }) =
   const getDifficultyInfo = (diff: Difficulty) => {
     switch (diff) {
       case 'easy':
-        return { cities: '100+', population: '1M+', icon: <Target className="w-5 h-5" />, zoom: 'Full Control' };
-      case 'medium':
-        return { cities: '300+', population: '500K+', icon: <Globe className="w-5 h-5" />, zoom: 'Zoom In Only' };
+        return { 
+          cities: '100+', 
+          population: '1M+', 
+          icon: <Target className="w-5 h-5" />, 
+          zoom: 'Full Control',
+          description: 'Zoom in/out and pan around'
+        };
       case 'hard':
-        return { cities: '500+', population: '100K+', icon: <Zap className="w-5 h-5" />, zoom: 'Zoom In Only' };
+        return { 
+          cities: '500+', 
+          population: '100K+', 
+          icon: <Zap className="w-5 h-5" />, 
+          zoom: 'Zoom In Only',
+          description: 'No panning, zoom in only'
+        };
     }
   };
 
@@ -149,7 +158,7 @@ const StartScreen: React.FC<StartScreenProps> = ({ onStartGame, leaderboard }) =
         <div className="flex-1 p-4 flex items-center justify-center">
           <div className="max-w-6xl w-full">
             
-            {/* Mobile Layout: Single Column */}
+            {/* Mobile Layout: Single Column - Hall of Fame below fold */}
             <div className="lg:hidden space-y-4">
               {/* Compact Title */}
               <div className="text-center mb-6">
@@ -188,7 +197,7 @@ const StartScreen: React.FC<StartScreenProps> = ({ onStartGame, leaderboard }) =
                         Difficulty Level
                       </label>
                       <div className="space-y-2">
-                        {(['easy', 'medium', 'hard'] as Difficulty[]).map((diff) => {
+                        {(['easy', 'hard'] as Difficulty[]).map((diff) => {
                           const info = getDifficultyInfo(diff);
                           return (
                             <button
@@ -211,6 +220,9 @@ const StartScreen: React.FC<StartScreenProps> = ({ onStartGame, leaderboard }) =
                                   <div className="text-muted-foreground">{info.population}</div>
                                 </div>
                               </div>
+                              <div className="text-xs text-muted-foreground mt-1 text-left">
+                                {info.description}
+                              </div>
                             </button>
                           );
                         })}
@@ -228,47 +240,49 @@ const StartScreen: React.FC<StartScreenProps> = ({ onStartGame, leaderboard }) =
                 </div>
               </div>
 
-              {/* Compact Leaderboard - Optional on Mobile */}
-              {leaderboard.length > 0 && (
-                <div className="bg-white/95 backdrop-blur-sm border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-                  <div className="p-3 border-b-2 border-black">
-                    <h3 className="text-base font-black uppercase tracking-wider flex items-center gap-2">
-                      <Trophy className="w-4 h-4 text-accent" />
-                      TOP EXPLORERS
-                    </h3>
-                  </div>
-                  <div className="p-3 max-h-40 overflow-y-auto">
-                    <div className="space-y-2">
-                      {leaderboard.slice(0, 5).map((entry, index) => (
-                        <div
-                          key={`${entry.name}-${index}`}
-                          className="flex items-center justify-between text-sm"
-                        >
-                          <div className="flex items-center gap-2">
-                            <div className={`w-6 h-6 border border-black flex items-center justify-center font-black text-xs ${
-                              index === 0 ? 'bg-yellow-400' : 
-                              index === 1 ? 'bg-gray-300' : 
-                              index === 2 ? 'bg-amber-600' : 'bg-white'
-                            }`}>
-                              {index + 1}
+              {/* Mobile Hall of Fame - Below fold */}
+              <div className="mt-8">
+                {leaderboard.length > 0 && (
+                  <div className="bg-white/95 backdrop-blur-sm border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                    <div className="p-3 border-b-2 border-black">
+                      <h3 className="text-base font-black uppercase tracking-wider flex items-center gap-2">
+                        <Trophy className="w-4 h-4 text-accent" />
+                        HALL OF FAME
+                      </h3>
+                    </div>
+                    <div className="p-3 max-h-40 overflow-y-auto">
+                      <div className="space-y-2">
+                        {leaderboard.slice(0, 5).map((entry, index) => (
+                          <div
+                            key={`${entry.name}-${index}`}
+                            className="flex items-center justify-between text-sm"
+                          >
+                            <div className="flex items-center gap-2">
+                              <div className={`w-6 h-6 border border-black flex items-center justify-center font-black text-xs ${
+                                index === 0 ? 'bg-yellow-400' : 
+                                index === 1 ? 'bg-gray-300' : 
+                                index === 2 ? 'bg-amber-600' : 'bg-white'
+                              }`}>
+                                {index + 1}
+                              </div>
+                              <div className="font-bold uppercase truncate max-w-[120px]">
+                                {entry.name}
+                              </div>
                             </div>
-                            <div className="font-bold uppercase truncate max-w-[120px]">
-                              {entry.name}
-                            </div>
+                            <div className="font-black">{entry.score}</div>
                           </div>
-                          <div className="font-black">{entry.score}</div>
-                        </div>
-                      ))}
+                        ))}
+                      </div>
                     </div>
                   </div>
-                </div>
-              )}
+                )}
+              </div>
             </div>
 
-            {/* Desktop Layout: Two Columns */}
-            <div className="hidden lg:grid lg:grid-cols-2 gap-8 items-start">
-              {/* Game Setup */}
-              <div className="space-y-6">
+            {/* Desktop Layout: Properly Aligned Two Columns */}
+            <div className="hidden lg:grid lg:grid-cols-2 gap-8 items-start min-h-[600px]">
+              {/* Left Column - Game Setup */}
+              <div className="space-y-6 flex flex-col justify-center">
                 {/* Title */}
                 <div className="text-center lg:text-left">
                   <h1 className="text-8xl font-black neo-text-shadow text-white mb-4 tracking-wider">
@@ -307,7 +321,7 @@ const StartScreen: React.FC<StartScreenProps> = ({ onStartGame, leaderboard }) =
                           Difficulty Level
                         </label>
                         <div className="grid grid-cols-1 gap-3">
-                          {(['easy', 'medium', 'hard'] as Difficulty[]).map((diff) => {
+                          {(['easy', 'hard'] as Difficulty[]).map((diff) => {
                             const info = getDifficultyInfo(diff);
                             return (
                               <button
@@ -328,8 +342,10 @@ const StartScreen: React.FC<StartScreenProps> = ({ onStartGame, leaderboard }) =
                                   <div className="text-right text-sm">
                                     <div>{info.cities} Cities</div>
                                     <div className="text-muted-foreground">{info.population} Pop</div>
-                                    <div className="text-muted-foreground">{info.zoom}</div>
                                   </div>
+                                </div>
+                                <div className="text-sm text-muted-foreground mt-2 text-left">
+                                  {info.description}
                                 </div>
                               </button>
                             );
@@ -349,8 +365,8 @@ const StartScreen: React.FC<StartScreenProps> = ({ onStartGame, leaderboard }) =
                 </div>
               </div>
 
-              {/* Leaderboard */}
-              <div className="space-y-6">
+              {/* Right Column - Hall of Fame (Aligned) */}
+              <div className="space-y-6 flex flex-col justify-center">
                 <div className="neo-card bg-white/95 backdrop-blur-sm">
                   <div className="p-4 border-b-4 border-black">
                     <h2 className="text-2xl font-black uppercase tracking-wider flex items-center gap-2">

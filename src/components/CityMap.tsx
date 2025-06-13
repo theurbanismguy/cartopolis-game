@@ -29,7 +29,6 @@ const CityMap: React.FC<CityMapProps> = ({ city, showAnswer, difficulty }) => {
     const getInitialZoom = (diff: Difficulty) => {
       switch (diff) {
         case 'easy': return 13;
-        case 'medium': return 12;
         case 'hard': return 11;
         default: return 12;
       }
@@ -37,16 +36,18 @@ const CityMap: React.FC<CityMapProps> = ({ city, showAnswer, difficulty }) => {
 
     const initialZoom = getInitialZoom(difficulty);
 
-    // Create map centered on the city with appropriate zoom level
-    const map = L.map(mapRef.current, {
+    // Create map with difficulty-specific settings
+    const mapOptions: L.MapOptions = {
       center: [city.lat, city.lng],
       zoom: initialZoom,
       zoomControl: false,
       scrollWheelZoom: true,
       doubleClickZoom: true,
-      dragging: true,
+      dragging: difficulty === 'easy', // Only allow dragging in easy mode
       attributionControl: false
-    });
+    };
+
+    const map = L.map(mapRef.current, mapOptions);
 
     // Add satellite tile layer only
     const tileLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
@@ -58,16 +59,16 @@ const CityMap: React.FC<CityMapProps> = ({ city, showAnswer, difficulty }) => {
     mapInstanceRef.current = map;
 
     // Set zoom restrictions based on difficulty
-    if (difficulty === 'medium' || difficulty === 'hard') {
-      // For medium and hard, prevent zooming out below initial level
+    if (difficulty === 'hard') {
+      // For hard mode, only allow zooming in
       map.setMinZoom(initialZoom);
       
-      // Add custom zoom control with restricted functionality
+      // Add custom zoom control with only zoom in
       const customZoomControl = L.Control.extend({
         onAdd: function(map: L.Map) {
           const container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom');
           
-          // Zoom in button
+          // Zoom in button only
           const zoomInButton = L.DomUtil.create('a', 'leaflet-control-zoom-in', container);
           zoomInButton.innerHTML = '+';
           zoomInButton.href = '#';
@@ -77,14 +78,6 @@ const CityMap: React.FC<CityMapProps> = ({ city, showAnswer, difficulty }) => {
             L.DomEvent.preventDefault(e);
             map.zoomIn();
           });
-          
-          // Zoom out button (disabled for medium/hard)
-          const zoomOutButton = L.DomUtil.create('a', 'leaflet-control-zoom-out leaflet-control-zoom-disabled', container);
-          zoomOutButton.innerHTML = '−';
-          zoomOutButton.href = '#';
-          zoomOutButton.title = 'Zoom out (disabled)';
-          zoomOutButton.style.opacity = '0.5';
-          zoomOutButton.style.cursor = 'not-allowed';
           
           return container;
         }
@@ -177,9 +170,6 @@ const CityMap: React.FC<CityMapProps> = ({ city, showAnswer, difficulty }) => {
             height: 24px !important;
             font-size: 16px !important;
             line-height: 20px !important;
-          }
-          .leaflet-control-zoom-disabled {
-            pointer-events: none !important;
           }
           @keyframes neo-bounce {
             0%, 20%, 53%, 80%, 100% {

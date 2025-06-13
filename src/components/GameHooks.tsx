@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Difficulty } from '../data/cities';
 
 export const useGameState = () => {
@@ -8,7 +8,6 @@ export const useGameState = () => {
   const [currentRound, setCurrentRound] = useState(1);
   const [currentStreak, setCurrentStreak] = useState(0);
   const [bestStreak, setBestStreak] = useState(0);
-  const [hintsUsed, setHintsUsed] = useState(0);
   const [roundStartTime, setRoundStartTime] = useState<number>(0);
   const [totalTimeBonus, setTotalTimeBonus] = useState(0);
 
@@ -18,20 +17,18 @@ export const useGameState = () => {
     setCurrentRound(1);
     setCurrentStreak(0);
     setBestStreak(0);
-    setHintsUsed(0);
     setTotalTimeBonus(0);
     setRoundStartTime(Date.now());
   };
 
   const nextRound = () => {
     setCurrentRound(prev => prev + 1);
-    setHintsUsed(0);
     setRoundStartTime(Date.now());
   };
 
   const calculateTimeBonus = (startTime: number, difficulty: Difficulty): number => {
     const timeTaken = (Date.now() - startTime) / 1000;
-    const baseTime = difficulty === 'easy' ? 60 : difficulty === 'medium' ? 45 : 30;
+    const baseTime = difficulty === 'easy' ? 60 : 30;
     
     if (timeTaken <= baseTime) {
       return Math.max(0, Math.floor((baseTime - timeTaken) / 5));
@@ -56,8 +53,6 @@ export const useGameState = () => {
     setCurrentStreak,
     bestStreak,
     setBestStreak,
-    hintsUsed,
-    setHintsUsed,
     roundStartTime,
     setRoundStartTime,
     totalTimeBonus,

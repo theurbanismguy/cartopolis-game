@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { City, getRandomCity, Difficulty } from '../data/cities';
 import CityMap from './CityMap';
@@ -9,13 +10,15 @@ import FloatingControls from './FloatingControls';
 import GameEnhancedStats from './GameEnhancedStats';
 import TopBar from './TopBar';
 import CompactWikipediaCard from './CompactWikipediaCard';
+import CityLetterBoxes from './CityLetterBoxes';
 import { useGameState } from './GameHooks';
+import { useHintSystem } from './HintSystem';
 import { toast } from 'sonner';
 
 const CityGuessingGame: React.FC = () => {
   const [gameStarted, setGameStarted] = useState(false);
   const [playerName, setPlayerName] = useState<string>('');
-  const [difficulty, setDifficulty] = useState<Difficulty>('medium');
+  const [difficulty, setDifficulty] = useState<Difficulty>('easy');
   const [currentCity, setCurrentCity] = useState<City | null>(null);
   const [gameState, setGameState] = useState<'guessing' | 'correct' | 'incorrect'>('guessing');
   const [showAnswer, setShowAnswer] = useState(false);
@@ -33,8 +36,6 @@ const CityGuessingGame: React.FC = () => {
     setCurrentStreak,
     bestStreak,
     setBestStreak,
-    hintsUsed,
-    setHintsUsed,
     roundStartTime,
     setRoundStartTime,
     totalTimeBonus,
@@ -44,6 +45,15 @@ const CityGuessingGame: React.FC = () => {
     calculateTimeBonus,
     getStreakMultiplier
   } = useGameState();
+
+  const {
+    hintsUsed,
+    revealedLetters,
+    hintState,
+    useHint,
+    resetHints,
+    canUseHint
+  } = useHintSystem();
 
   // Load leaderboard from localStorage on component mount
   useEffect(() => {
@@ -66,6 +76,7 @@ const CityGuessingGame: React.FC = () => {
     setGameState('guessing');
     setShowAnswer(false);
     resetGameState();
+    resetHints();
     setRoundStartTime(Date.now());
     toast.success(`Welcome to Cartopolis, ${name}! Good luck exploring!`);
   };
@@ -123,6 +134,7 @@ const CityGuessingGame: React.FC = () => {
     setGameState('guessing');
     setShowAnswer(false);
     setShowWikipedia(false);
+    resetHints();
     nextRoundState();
   };
 
@@ -132,6 +144,7 @@ const CityGuessingGame: React.FC = () => {
     setShowAnswer(false);
     setShowWikipedia(false);
     resetGameState();
+    resetHints();
     toast.success('Game reset! Good luck!');
   };
 
@@ -187,23 +200,12 @@ const CityGuessingGame: React.FC = () => {
     setShowAnswer(false);
   };
 
-  const useHint = (hintType: string) => {
-    if (!currentCity) return;
+  const handleUseHint = () => {
+    if (!currentCity || !canUseHint) return;
     
-    setHintsUsed(prev => prev + 1);
-    
-    switch (hintType) {
-      case 'continent':
-        toast.info(`Hint: This city is in ${currentCity.continent} (-2 points)`);
-        break;
-      case 'population':
-        const popRange = currentCity.population >= 1000000 ? 'over 1 million' : 
-                        currentCity.population >= 500000 ? '500K - 1M' : 'under 500K';
-        toast.info(`Hint: Population is ${popRange} (-2 points)`);
-        break;
-      case 'firstletter':
-        toast.info(`Hint: City starts with "${currentCity.name[0]}" (-2 points)`);
-        break;
+    const hintMessage = useHint(currentCity);
+    if (hintMessage) {
+      toast.info(hintMessage);
     }
   };
 
@@ -265,11 +267,11 @@ const CityGuessingGame: React.FC = () => {
           currentRound={currentRound}
           currentStreak={currentStreak}
           onShowLeaderboard={() => setShowLeaderboard(true)}
-          onResetGame={resetGame}
           onEndGame={endGame}
           onBackToMenu={backToMenu}
-          onUseHint={useHint}
+          onUseHint={handleUseHint}
           hintsUsed={hintsUsed}
+          canUseHint={canUseHint}
           gameState={gameState}
         />
       </div>
@@ -295,11 +297,24 @@ const CityGuessingGame: React.FC = () => {
           onResetGame={resetGame}
           onEndGame={endGame}
           onBackToMenu={backToMenu}
-          onUseHint={useHint}
+          onUseHint={handleUseHint}
           hintsUsed={hintsUsed}
           gameState={gameState}
         />
       </div>
+
+      {/* City Letter Boxes */}
+      {currentCity && (
+        <div className="fixed top-20 md:top-4 left-1/2 transform -translate-x-1/2 z-40">
+          <div className="bg-white/95 backdrop-blur-sm border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] p-4 rounded-none">
+            <CityLetterBoxes
+              cityName={currentCity.name}
+              revealedLetters={revealedLetters}
+              showAnswer={showAnswer}
+            />
+          </div>
+        </div>
+      )}
       
       <FloatingGuessInput
         onGuess={checkGuess}
