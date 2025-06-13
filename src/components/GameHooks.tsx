@@ -10,7 +10,6 @@ export const useGameState = () => {
   const [currentStreak, setCurrentStreak] = useState(0);
   const [bestStreak, setBestStreak] = useState(0);
   const [roundStartTime, setRoundStartTime] = useState<number>(0);
-  const [totalTimeBonus, setTotalTimeBonus] = useState(0);
 
   const resetGame = () => {
     setScore(0);
@@ -19,7 +18,6 @@ export const useGameState = () => {
     setCurrentRound(1);
     setCurrentStreak(0);
     setBestStreak(0);
-    setTotalTimeBonus(0);
     setRoundStartTime(Date.now());
   };
 
@@ -28,19 +26,9 @@ export const useGameState = () => {
     setRoundStartTime(Date.now());
   };
 
-  const calculateTimeBonus = (startTime: number, difficulty: Difficulty): number => {
-    const timeTaken = (Date.now() - startTime) / 1000;
-    const baseTime = difficulty === 'easy' ? 60 : 30;
-    
-    if (timeTaken <= baseTime) {
-      return Math.max(0, Math.floor((baseTime - timeTaken) / 15)); // Reduced time bonus scaling
-    }
-    return 0;
-  };
-
   const calculateAccuracy = (): number => {
     if (totalGuesses === 0) return 0;
-    return Math.min(100, Math.round((correctGuesses / totalGuesses) * 100));
+    return Math.round((correctGuesses / totalGuesses) * 100);
   };
 
   return {
@@ -57,11 +45,8 @@ export const useGameState = () => {
     setBestStreak,
     roundStartTime,
     setRoundStartTime,
-    totalTimeBonus,
-    setTotalTimeBonus,
     resetGame,
     nextRound,
-    calculateTimeBonus,
     calculateAccuracy
   };
 };

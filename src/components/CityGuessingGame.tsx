@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { City, getRandomCity, Difficulty, resetRecentCities } from '../data/cities';
 import CityMap from './CityMap';
@@ -41,11 +40,8 @@ const CityGuessingGame: React.FC = () => {
     setBestStreak,
     roundStartTime,
     setRoundStartTime,
-    totalTimeBonus,
-    setTotalTimeBonus,
     resetGame: resetGameState,
     nextRound: nextRoundState,
-    calculateTimeBonus,
     calculateAccuracy
   } = useGameState();
 
@@ -58,10 +54,30 @@ const CityGuessingGame: React.FC = () => {
     canUseHint
   } = useHintSystem();
 
-  // Load leaderboard from localStorage on component mount
+  // Helper function to check if leaderboard should be reset (daily at 12 PM CET)
+  const shouldResetLeaderboard = (lastResetTime: string | null): boolean => {
+    if (!lastResetTime) return true;
+    
+    const now = new Date();
+    const lastReset = new Date(lastResetTime);
+    const today12PM = new Date();
+    today12PM.setHours(11, 0, 0, 0); // 12 PM CET = 11 AM UTC
+    
+    // If it's past 12 PM today and last reset was before today 12 PM
+    return now >= today12PM && lastReset < today12PM;
+  };
+
+  // Load leaderboard from localStorage on component mount with daily reset check
   useEffect(() => {
     const savedLeaderboard = localStorage.getItem('cartopolisLeaderboard');
-    if (savedLeaderboard) {
+    const lastResetTime = localStorage.getItem('cartopolisLastReset');
+    
+    if (shouldResetLeaderboard(lastResetTime)) {
+      // Reset leaderboard and update reset time
+      setLeaderboard([]);
+      localStorage.setItem('cartopolisLastReset', new Date().toISOString());
+      localStorage.removeItem('cartopolisLeaderboard');
+    } else if (savedLeaderboard) {
       setLeaderboard(JSON.parse(savedLeaderboard));
     }
   }, []);
@@ -101,12 +117,8 @@ const CityGuessingGame: React.FC = () => {
     setTotalGuesses(prev => prev + 1);
     
     if (isExactMatch || isPartialMatch) {
-      // New scoring system: max 5 points, 1 point penalty per hint
-      let basePoints = 5;
-      const timeBonus = calculateTimeBonus(roundStartTime, difficulty);
-      const hintPenalty = hintsUsed * 1; // 1 point per hint used
-      
-      const roundScore = Math.max(1, basePoints + timeBonus - hintPenalty);
+      // Simplified scoring: 5 points minus 1 point per hint used
+      const roundScore = Math.max(1, 5 - hintsUsed);
       
       setScore(prev => prev + roundScore);
       setCorrectGuesses(prev => prev + 1);
@@ -115,13 +127,12 @@ const CityGuessingGame: React.FC = () => {
         setBestStreak(current => Math.max(current, newStreak));
         return newStreak;
       });
-      setTotalTimeBonus(prev => prev + timeBonus);
       setGameState('correct');
       setShowAnswer(true);
       setShowWikipedia(true);
       
       let message = `CORRECT! +${roundScore} points`;
-      if (timeBonus > 0) message += ` (+${timeBonus} speed bonus)`;
+      if (hintsUsed > 0) message += ` (-${hintsUsed} for hints)`;
       
       toast.success(message);
     } else {
@@ -163,8 +174,7 @@ const CityGuessingGame: React.FC = () => {
         score,
         accuracy,
         gamesPlayed: currentRound - 1,
-        streak: bestStreak,
-        timeBonus: totalTimeBonus
+        streak: bestStreak
       };
 
       setLeaderboard(prev => {
@@ -177,8 +187,7 @@ const CityGuessingGame: React.FC = () => {
             score: Math.max(existingEntry.score, score),
             accuracy: Math.max(existingEntry.accuracy, accuracy),
             gamesPlayed: existingEntry.gamesPlayed + (currentRound - 1),
-            streak: Math.max(existingEntry.streak || 0, bestStreak),
-            timeBonus: (existingEntry.timeBonus || 0) + totalTimeBonus
+            streak: Math.max(existingEntry.streak || 0, bestStreak)
           };
           return updatedLeaderboard.sort((a, b) => {
             if (b.score !== a.score) return b.score - a.score;
@@ -313,7 +322,6 @@ const CityGuessingGame: React.FC = () => {
           difficulty={difficulty}
           currentStreak={currentStreak}
           bestStreak={bestStreak}
-          timeBonus={totalTimeBonus}
         />
       </div>
 

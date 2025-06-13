@@ -19,6 +19,9 @@ const HallOfFame: React.FC<HallOfFameProps> = ({ leaderboard }) => {
           <Trophy className="w-5 h-5 md:w-6 md:h-6 text-accent" />
           HALL OF FAME
         </h3>
+        <p className="text-xs md:text-sm text-muted-foreground font-bold uppercase mt-1">
+          Today's Leaders • Resets daily at 12 PM CET
+        </p>
       </div>
       <div className="p-4 md:p-6 max-h-80 md:max-h-96 overflow-y-auto">
         <div className="space-y-3">
@@ -52,9 +55,6 @@ const HallOfFame: React.FC<HallOfFameProps> = ({ leaderboard }) => {
               </div>
               <div className="text-right">
                 <div className="font-black text-lg md:text-xl">{entry.score}</div>
-                {(entry.timeBonus && entry.timeBonus > 0) && (
-                  <div className="text-xs md:text-sm text-blue-500">+{entry.timeBonus}</div>
-                )}
               </div>
             </div>
           ))}

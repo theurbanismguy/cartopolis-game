@@ -63,18 +63,23 @@ const CompactWikipediaCard: React.FC<CompactWikipediaCardProps> = ({ city, show,
 
   const cityFacts = [
     { icon: Globe, label: 'Continent', value: city.continent },
-    { icon: Users, label: 'Population', value: city.population.toLocaleString() },
     { icon: MapPin, label: 'Country', value: city.country },
+    { icon: Users, label: 'Population', value: city.population.toLocaleString() },
   ];
 
   return (
     <div className="fixed inset-x-4 bottom-20 md:bottom-4 z-50 max-h-[40vh] md:max-h-[50vh]">
       <div className="bg-white/95 backdrop-blur-sm border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] overflow-hidden">
-        {/* Header with close button */}
+        {/* Header with city information */}
         <div className="flex items-center justify-between p-3 border-b-2 border-black bg-accent/10">
-          <h3 className="text-sm md:text-base font-black uppercase truncate">
-            {city.name}, {city.country}
-          </h3>
+          <div className="flex-1 min-w-0">
+            <h3 className="text-sm md:text-base font-black uppercase truncate">
+              {city.name}
+            </h3>
+            <p className="text-xs text-muted-foreground">
+              {city.country} • {city.continent} • {city.population.toLocaleString()} people
+            </p>
+          </div>
           <button
             onClick={onClose}
             className="p-1 bg-white border border-black shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-[1px] hover:translate-y-[1px] transition-all duration-100"
