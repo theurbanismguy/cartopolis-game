@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Trophy, Flame, Clock } from 'lucide-react';
 import { LeaderboardEntry } from './Leaderboard';
@@ -12,7 +11,8 @@ const HallOfFame: React.FC<HallOfFameProps> = ({ leaderboard }) => {
     return null;
   }
 
-  const getDifficultyColor = (difficulty: string) => {
+  const getDifficultyColor = (difficulty: string | undefined) => {
+    if (!difficulty) return 'text-gray-600';
     return difficulty === 'easy' ? 'text-green-600' : 'text-red-600';
   };
 

@@ -174,7 +174,8 @@ const CityGuessingGame: React.FC = () => {
         score,
         accuracy,
         gamesPlayed: currentRound - 1,
-        streak: bestStreak
+        streak: bestStreak,
+        difficulty: difficulty
       };
 
       setLeaderboard(prev => {
@@ -187,7 +188,8 @@ const CityGuessingGame: React.FC = () => {
             score: Math.max(existingEntry.score, score),
             accuracy: Math.max(existingEntry.accuracy, accuracy),
             gamesPlayed: existingEntry.gamesPlayed + (currentRound - 1),
-            streak: Math.max(existingEntry.streak || 0, bestStreak)
+            streak: Math.max(existingEntry.streak || 0, bestStreak),
+            difficulty: difficulty
           };
           return updatedLeaderboard.sort((a, b) => {
             if (b.score !== a.score) return b.score - a.score;

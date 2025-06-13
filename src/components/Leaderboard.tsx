@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Trophy, Medal, Award, Flame, Clock } from 'lucide-react';
@@ -46,11 +45,13 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ entries }) => {
     }
   };
 
-  const getDifficultyColor = (difficulty: Difficulty) => {
+  const getDifficultyColor = (difficulty: Difficulty | undefined) => {
+    if (!difficulty) return 'text-gray-600';
     return difficulty === 'easy' ? 'text-green-600' : 'text-red-600';
   };
 
-  const getDifficultyLabel = (difficulty: Difficulty) => {
+  const getDifficultyLabel = (difficulty: Difficulty | undefined) => {
+    if (!difficulty) return 'UNKNOWN';
     return difficulty.toUpperCase();
   };
 
