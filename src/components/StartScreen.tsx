@@ -157,14 +157,11 @@ const StartScreen: React.FC<StartScreenProps> = ({ onStartGame, leaderboard }) =
         <div className="flex-1 p-4 flex items-center justify-center">
           <div className="max-w-2xl w-full space-y-8">
             
-            {/* Title */}
+            {/* Title - removed subtitle */}
             <div className="text-center">
               <h1 className="text-5xl md:text-8xl font-black neo-text-shadow text-white tracking-wider">
                 CARTOPOLIS
               </h1>
-              <p className="text-base md:text-xl font-bold text-white mt-2 md:mt-4 neo-text-shadow">
-                MASTER THE WORLD FROM SATELLITE VIEW
-              </p>
             </div>
 
             {/* Game Setup Form */}
