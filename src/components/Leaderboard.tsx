@@ -56,30 +56,23 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ entries }) => {
     return difficulty.toUpperCase();
   };
 
-  const today = new Date().toLocaleDateString('en-US', { 
-    weekday: 'long',
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
-  });
-
   return (
     <Card className="neo-card">
       <CardHeader className="border-b-4 border-black">
         <CardTitle className="text-2xl font-black uppercase tracking-wider flex items-center gap-2">
           <Trophy className="w-6 h-6 text-accent" />
-          LEADERBOARD
+          YOUR HIGHSCORES
         </CardTitle>
         <p className="text-sm text-muted-foreground font-bold uppercase">
-          {today} • Resets daily at 12 PM CET
+          Your personal best scores
         </p>
       </CardHeader>
       <CardContent className="p-0">
         {sortedEntries.length === 0 ? (
           <p className="text-center text-muted-foreground font-bold uppercase tracking-wider py-8 text-lg">
-            NO EXPLORERS YET!
+            NO SCORES YET!
             <br />
-            BE THE FIRST TO CONQUER THE WORLD!
+            PLAY YOUR FIRST GAME!
           </p>
         ) : (
           <div className="space-y-0">

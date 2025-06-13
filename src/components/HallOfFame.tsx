@@ -17,21 +17,15 @@ const HallOfFame: React.FC<HallOfFameProps> = ({ leaderboard }) => {
     return difficulty === 'easy' ? 'text-green-600' : 'text-red-600';
   };
 
-  const today = new Date().toLocaleDateString('en-US', { 
-    weekday: 'long',
-    month: 'short',
-    day: 'numeric'
-  });
-
   return (
     <div className="bg-white/95 backdrop-blur-sm border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
       <div className="p-4 md:p-6 border-b-2 border-black">
         <h3 className="text-lg md:text-2xl font-black uppercase tracking-wider flex items-center gap-2">
           <Trophy className="w-5 h-5 md:w-6 md:h-6 text-accent" />
-          HALL OF FAME
+          YOUR HIGHSCORES
         </h3>
         <p className="text-xs md:text-sm text-muted-foreground font-bold uppercase mt-1">
-          {today} • Resets daily at 12 PM CET
+          Your personal best scores
         </p>
       </div>
       <div className="p-4 md:p-6 max-h-80 md:max-h-96 overflow-y-auto">

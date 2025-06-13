@@ -1,18 +1,6 @@
 
 import { LeaderboardEntry } from './Leaderboard';
 
-export const shouldResetLeaderboard = (lastResetTime: string | null): boolean => {
-  if (!lastResetTime) return true;
-  
-  const now = new Date();
-  const lastReset = new Date(lastResetTime);
-  const today12PM = new Date();
-  today12PM.setHours(11, 0, 0, 0); // 12 PM CET = 11 AM UTC
-  
-  // If it's past 12 PM today and last reset was before today 12 PM
-  return now >= today12PM && lastReset < today12PM;
-};
-
 export const sortLeaderboard = (entries: LeaderboardEntry[]): LeaderboardEntry[] => {
   return entries.sort((a, b) => {
     if (b.score !== a.score) return b.score - a.score;

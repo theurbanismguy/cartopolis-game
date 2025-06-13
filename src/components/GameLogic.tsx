@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { City, getRandomCity, Difficulty, resetRecentCities } from '../data/cities';
 import { LeaderboardEntry } from './Leaderboard';
@@ -8,7 +7,7 @@ import LeaderboardScreen from './LeaderboardScreen';
 import GameScreen from './GameScreen';
 import { useGameState } from './GameHooks';
 import { useHintSystem } from './HintSystem';
-import { shouldResetLeaderboard, updatePlayerInLeaderboard } from './GameUtils';
+import { updatePlayerInLeaderboard } from './GameUtils';
 import { toast } from 'sonner';
 
 const GameLogic: React.FC = () => {
@@ -51,17 +50,10 @@ const GameLogic: React.FC = () => {
     canUseHint
   } = useHintSystem();
 
-  // Load leaderboard from localStorage on component mount with daily reset check
+  // Load leaderboard from localStorage on component mount
   useEffect(() => {
     const savedLeaderboard = localStorage.getItem('cartopolisLeaderboard');
-    const lastResetTime = localStorage.getItem('cartopolisLastReset');
-    
-    if (shouldResetLeaderboard(lastResetTime)) {
-      // Reset leaderboard and update reset time
-      setLeaderboard([]);
-      localStorage.setItem('cartopolisLastReset', new Date().toISOString());
-      localStorage.removeItem('cartopolisLeaderboard');
-    } else if (savedLeaderboard) {
+    if (savedLeaderboard) {
       setLeaderboard(JSON.parse(savedLeaderboard));
     }
   }, []);

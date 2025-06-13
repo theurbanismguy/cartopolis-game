@@ -30,7 +30,7 @@ const StartScreen: React.FC<StartScreenProps> = ({ onStartGame, leaderboard }) =
                 CARTOPOLIS
               </h1>
               <p className="text-lg md:text-xl text-white/90 font-semibold mt-2">
-                a game by{' '}
+                A City Guessing Game by{' '}
                 <a 
                   href="https://www.instagram.com/theurbanismguy/" 
                   target="_blank" 
@@ -47,7 +47,7 @@ const StartScreen: React.FC<StartScreenProps> = ({ onStartGame, leaderboard }) =
               <GameSetupForm onStartGame={onStartGame} />
             </div>
 
-            {/* Hall of Fame - Better mobile spacing */}
+            {/* Your Highscores - Better mobile spacing */}
             <div className="px-2 pb-8">
               <HallOfFame leaderboard={leaderboard} />
             </div>

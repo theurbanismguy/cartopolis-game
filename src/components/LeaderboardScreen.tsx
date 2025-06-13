@@ -20,7 +20,7 @@ const LeaderboardScreen: React.FC<LeaderboardScreenProps> = ({
       <div className="max-w-4xl mx-auto space-y-6">
         <div className="text-center space-y-4">
           <h1 className="text-4xl md:text-6xl font-black neo-text-shadow text-white uppercase tracking-wider">
-            HALL OF FAME
+            YOUR HIGHSCORES
           </h1>
           <div className="flex flex-wrap justify-center gap-2 md:gap-4">
             <button 
