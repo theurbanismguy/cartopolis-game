@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Settings, X, Trophy, Home, Users } from 'lucide-react';
+import { Settings, X, Trophy, Home, Lightbulb } from 'lucide-react';
 
 interface TopBarProps {
   playerName: string;
@@ -89,7 +89,7 @@ const TopBar: React.FC<TopBarProps> = ({
         <div className="fixed top-12 right-2 z-50 md:hidden">
           <div className="bg-white/95 backdrop-blur-sm border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] min-w-[200px]">
             <div className="p-2 space-y-2">
-              {/* Hint Button */}
+              {/* Hint Button - Only during guessing */}
               {gameState === 'guessing' && (
                 <div className="border-b border-black pb-2 mb-2">
                   <button
@@ -105,7 +105,7 @@ const TopBar: React.FC<TopBarProps> = ({
                     }`}
                   >
                     <div className="flex items-center gap-2">
-                      <Users className="w-4 h-4" />
+                      <Lightbulb className="w-4 h-4" />
                       HINT
                     </div>
                     <span className="text-xs">({hintsUsed}/4)</span>
@@ -113,7 +113,7 @@ const TopBar: React.FC<TopBarProps> = ({
                 </div>
               )}
               
-              {/* Main Controls */}
+              {/* Main Controls - Only the three requested */}
               <button
                 onClick={() => {
                   onShowLeaderboard();

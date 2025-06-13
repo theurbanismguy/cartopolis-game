@@ -1,16 +1,14 @@
-
 import React, { useState, useEffect } from 'react';
 import { City, getRandomCity, Difficulty } from '../data/cities';
 import CityMap from './CityMap';
 import Leaderboard, { LeaderboardEntry } from './Leaderboard';
 import StartScreen from './StartScreen';
-import FloatingGuessInput from './FloatingGuessInput';
+import InteractiveCityInput from './InteractiveCityInput';
 import FloatingStats from './FloatingStats';
-import FloatingControls from './FloatingControls';
+import SimpleFloatingControls from './SimpleFloatingControls';
 import GameEnhancedStats from './GameEnhancedStats';
 import TopBar from './TopBar';
 import CompactWikipediaCard from './CompactWikipediaCard';
-import CityLetterBoxes from './CityLetterBoxes';
 import { useGameState } from './GameHooks';
 import { useHintSystem } from './HintSystem';
 import { toast } from 'sonner';
@@ -292,35 +290,26 @@ const CityGuessingGame: React.FC = () => {
 
       {/* Desktop controls - hide on mobile */}
       <div className="hidden md:block">
-        <FloatingControls
+        <SimpleFloatingControls
           onShowLeaderboard={() => setShowLeaderboard(true)}
-          onResetGame={resetGame}
           onEndGame={endGame}
           onBackToMenu={backToMenu}
           onUseHint={handleUseHint}
           hintsUsed={hintsUsed}
+          canUseHint={canUseHint}
           gameState={gameState}
         />
       </div>
 
-      {/* City Letter Boxes */}
-      {currentCity && (
-        <div className="fixed top-20 md:top-4 left-1/2 transform -translate-x-1/2 z-40">
-          <div className="bg-white/95 backdrop-blur-sm border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] p-4 rounded-none">
-            <CityLetterBoxes
-              cityName={currentCity.name}
-              revealedLetters={revealedLetters}
-              showAnswer={showAnswer}
-            />
-          </div>
-        </div>
-      )}
-      
-      <FloatingGuessInput
+      {/* Interactive City Input */}
+      <InteractiveCityInput
+        cityName={currentCity.name}
+        revealedLetters={revealedLetters}
         onGuess={checkGuess}
         disabled={gameState !== 'guessing'}
         gameState={gameState}
         onNextRound={nextRound}
+        showAnswer={showAnswer}
       />
 
       {/* Compact Wikipedia Card */}
