@@ -69,7 +69,15 @@ const InteractiveCityInput: React.FC<InteractiveCityInputProps> = ({
 
   const handleKeyDown = (index: number, e: React.KeyboardEvent) => {
     if (e.key === 'Backspace' && !inputValues[index] && index > 0) {
-      const prevIndex = letters.findLastIndex((letter, i) => i < index && letter !== ' ');
+      // Find previous non-space index using a loop instead of findLastIndex
+      let prevIndex = -1;
+      for (let i = index - 1; i >= 0; i--) {
+        if (letters[i] !== ' ') {
+          prevIndex = i;
+          break;
+        }
+      }
+      
       if (prevIndex !== -1) {
         setFocusedIndex(prevIndex);
         inputRefs.current[prevIndex]?.focus();

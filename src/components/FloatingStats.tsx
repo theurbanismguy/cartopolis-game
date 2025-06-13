@@ -24,7 +24,6 @@ const FloatingStats: React.FC<FloatingStatsProps> = ({
   const getDifficultyIcon = () => {
     switch (difficulty) {
       case 'easy': return <Target className="w-4 h-4 text-green-600" />;
-      case 'medium': return <Globe className="w-4 h-4 text-yellow-600" />;
       case 'hard': return <Zap className="w-4 h-4 text-red-600" />;
     }
   };

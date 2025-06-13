@@ -37,7 +37,6 @@ const GameEnhancedStats: React.FC<GameEnhancedStatsProps> = ({
   const getDifficultyColor = (diff: Difficulty) => {
     switch (diff) {
       case 'easy': return 'text-green-500';
-      case 'medium': return 'text-yellow-500';
       case 'hard': return 'text-red-500';
     }
   };
