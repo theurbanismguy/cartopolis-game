@@ -2,6 +2,7 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Trophy, Medal, Award, Flame, Clock } from 'lucide-react';
+import { Difficulty } from '../data/cities';
 
 export interface LeaderboardEntry {
   name: string;
@@ -10,6 +11,7 @@ export interface LeaderboardEntry {
   gamesPlayed: number;
   streak?: number;
   timeBonus?: number;
+  difficulty: Difficulty;
 }
 
 interface LeaderboardProps {
@@ -44,13 +46,31 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ entries }) => {
     }
   };
 
+  const getDifficultyColor = (difficulty: Difficulty) => {
+    return difficulty === 'easy' ? 'text-green-600' : 'text-red-600';
+  };
+
+  const getDifficultyLabel = (difficulty: Difficulty) => {
+    return difficulty.toUpperCase();
+  };
+
+  const today = new Date().toLocaleDateString('en-US', { 
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  });
+
   return (
     <Card className="neo-card">
       <CardHeader className="border-b-4 border-black">
         <CardTitle className="text-2xl font-black uppercase tracking-wider flex items-center gap-2">
           <Trophy className="w-6 h-6 text-accent" />
-          CARTOPOLIS CHAMPIONS
+          TODAY'S LEADERBOARD
         </CardTitle>
+        <p className="text-sm text-muted-foreground font-bold uppercase">
+          {today} • Resets daily at 12 PM CET
+        </p>
       </CardHeader>
       <CardContent className="p-0">
         {sortedEntries.length === 0 ? (
@@ -75,18 +95,28 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ entries }) => {
                   <div>
                     <div className="font-black uppercase text-lg">{entry.name}</div>
                     <div className="text-sm text-muted-foreground uppercase font-bold flex items-center gap-3">
+                      <span className={getDifficultyColor(entry.difficulty)}>
+                        {getDifficultyLabel(entry.difficulty)} MODE
+                      </span>
+                      <span>•</span>
                       <span>{entry.gamesPlayed} Games</span>
                       {(entry.streak && entry.streak > 0) && (
-                        <span className="flex items-center gap-1 text-orange-500">
-                          <Flame className="w-3 h-3" />
-                          {entry.streak} Streak
-                        </span>
+                        <>
+                          <span>•</span>
+                          <span className="flex items-center gap-1 text-orange-500">
+                            <Flame className="w-3 h-3" />
+                            {entry.streak} Streak
+                          </span>
+                        </>
                       )}
                       {(entry.timeBonus && entry.timeBonus > 0) && (
-                        <span className="flex items-center gap-1 text-blue-500">
-                          <Clock className="w-3 h-3" />
-                          +{entry.timeBonus}
-                        </span>
+                        <>
+                          <span>•</span>
+                          <span className="flex items-center gap-1 text-blue-500">
+                            <Clock className="w-3 h-3" />
+                            +{entry.timeBonus}
+                          </span>
+                        </>
                       )}
                     </div>
                   </div>

@@ -12,15 +12,25 @@ const HallOfFame: React.FC<HallOfFameProps> = ({ leaderboard }) => {
     return null;
   }
 
+  const getDifficultyColor = (difficulty: string) => {
+    return difficulty === 'easy' ? 'text-green-600' : 'text-red-600';
+  };
+
+  const today = new Date().toLocaleDateString('en-US', { 
+    weekday: 'long',
+    month: 'short',
+    day: 'numeric'
+  });
+
   return (
     <div className="bg-white/95 backdrop-blur-sm border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
       <div className="p-4 md:p-6 border-b-2 border-black">
         <h3 className="text-lg md:text-2xl font-black uppercase tracking-wider flex items-center gap-2">
           <Trophy className="w-5 h-5 md:w-6 md:h-6 text-accent" />
-          HALL OF FAME
+          TODAY'S HALL OF FAME
         </h3>
         <p className="text-xs md:text-sm text-muted-foreground font-bold uppercase mt-1">
-          Today's Leaders • Resets daily at 12 PM CET
+          {today} • Resets daily at 12 PM CET
         </p>
       </div>
       <div className="p-4 md:p-6 max-h-80 md:max-h-96 overflow-y-auto">
@@ -45,6 +55,10 @@ const HallOfFame: React.FC<HallOfFameProps> = ({ leaderboard }) => {
                     {entry.name}
                   </div>
                   <div className="text-xs md:text-sm text-muted-foreground uppercase flex flex-wrap gap-2">
+                    <span className={getDifficultyColor(entry.difficulty)}>
+                      {entry.difficulty.toUpperCase()}
+                    </span>
+                    <span>•</span>
                     <span>{entry.gamesPlayed} Games</span>
                     <span>•</span>
                     <span>{entry.streak || 0} Streak</span>

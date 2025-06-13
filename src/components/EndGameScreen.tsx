@@ -94,7 +94,7 @@ const EndGameScreen: React.FC<EndGameScreenProps> = ({
         <div className="neo-card bg-white/95">
           <div className="p-4">
             <h2 className="text-2xl md:text-3xl font-black text-center uppercase tracking-wider mb-4 border-b-2 border-black pb-2">
-              HALL OF FAME
+              TODAY'S CHAMPIONS
             </h2>
             <Leaderboard entries={leaderboard} />
           </div>
