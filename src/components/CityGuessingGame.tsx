@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { City, getRandomCity, Difficulty } from '../data/cities';
 import CityMap from './CityMap';
@@ -9,6 +10,7 @@ import SimpleFloatingControls from './SimpleFloatingControls';
 import GameEnhancedStats from './GameEnhancedStats';
 import TopBar from './TopBar';
 import CompactWikipediaCard from './CompactWikipediaCard';
+import FloatingActionButtons from './FloatingActionButtons';
 import { useGameState } from './GameHooks';
 import { useHintSystem } from './HintSystem';
 import { toast } from 'sonner';
@@ -29,6 +31,8 @@ const CityGuessingGame: React.FC = () => {
     setScore,
     totalGuesses,
     setTotalGuesses,
+    correctGuesses,
+    setCorrectGuesses,
     currentRound,
     currentStreak,
     setCurrentStreak,
@@ -41,7 +45,7 @@ const CityGuessingGame: React.FC = () => {
     resetGame: resetGameState,
     nextRound: nextRoundState,
     calculateTimeBonus,
-    getStreakMultiplier
+    calculateAccuracy
   } = useGameState();
 
   const {
@@ -94,15 +98,15 @@ const CityGuessingGame: React.FC = () => {
     setTotalGuesses(prev => prev + 1);
     
     if (isExactMatch || isPartialMatch) {
-      // Calculate score with bonuses
-      let basePoints = isExactMatch ? 10 : 7;
+      // New scoring system: max 5 points, 1 point penalty per hint
+      let basePoints = 5;
       const timeBonus = calculateTimeBonus(roundStartTime, difficulty);
-      const streakMultiplier = getStreakMultiplier(currentStreak);
-      const hintPenalty = hintsUsed * 2;
+      const hintPenalty = hintsUsed * 1; // 1 point per hint used
       
-      const roundScore = Math.max(1, (basePoints + timeBonus) * streakMultiplier - hintPenalty);
+      const roundScore = Math.max(1, basePoints + timeBonus - hintPenalty);
       
       setScore(prev => prev + roundScore);
+      setCorrectGuesses(prev => prev + 1);
       setCurrentStreak(prev => {
         const newStreak = prev + 1;
         setBestStreak(current => Math.max(current, newStreak));
@@ -115,7 +119,6 @@ const CityGuessingGame: React.FC = () => {
       
       let message = `CORRECT! +${roundScore} points`;
       if (timeBonus > 0) message += ` (+${timeBonus} speed bonus)`;
-      if (streakMultiplier > 1) message += ` (${streakMultiplier}x streak!)`;
       
       toast.success(message);
     } else {
@@ -149,7 +152,7 @@ const CityGuessingGame: React.FC = () => {
   const endGame = () => {
     // Save current game to leaderboard before ending
     if (totalGuesses > 0) {
-      const accuracy = Math.round((score / Math.max(totalGuesses, 1)) * 10); // Adjust accuracy calculation for new scoring
+      const accuracy = calculateAccuracy();
       const newEntry: LeaderboardEntry = {
         name: playerName,
         score,
@@ -252,6 +255,8 @@ const CityGuessingGame: React.FC = () => {
 
   if (!currentCity) return null;
 
+  const currentAccuracy = calculateAccuracy();
+
   return (
     <div className="relative w-full h-screen overflow-hidden">
       {/* Full-screen map */}
@@ -267,10 +272,7 @@ const CityGuessingGame: React.FC = () => {
           onShowLeaderboard={() => setShowLeaderboard(true)}
           onEndGame={endGame}
           onBackToMenu={backToMenu}
-          onUseHint={handleUseHint}
-          hintsUsed={hintsUsed}
-          canUseHint={canUseHint}
-          gameState={gameState}
+          accuracy={currentAccuracy}
         />
       </div>
 
@@ -300,6 +302,15 @@ const CityGuessingGame: React.FC = () => {
           gameState={gameState}
         />
       </div>
+
+      {/* Floating Action Buttons - visible on all screen sizes */}
+      <FloatingActionButtons
+        onUseHint={handleUseHint}
+        onEndGame={endGame}
+        hintsUsed={hintsUsed}
+        canUseHint={canUseHint}
+        gameState={gameState}
+      />
 
       {/* Interactive City Input */}
       <InteractiveCityInput

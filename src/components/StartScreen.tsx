@@ -13,29 +13,33 @@ interface StartScreenProps {
 
 const StartScreen: React.FC<StartScreenProps> = ({ onStartGame, leaderboard }) => {
   return (
-    <div className="relative w-full h-screen overflow-hidden">
+    <div className="relative w-full min-h-screen overflow-auto">
       <BackgroundMap />
       
-      {/* Content overlay - single column layout */}
+      {/* Content overlay - single column layout with smooth scrolling */}
       <div 
-        className="relative h-full flex flex-col"
+        className="relative min-h-screen flex flex-col"
         style={{ zIndex: 10 }}
       >
-        <div className="flex-1 p-4 flex items-center justify-center">
-          <div className="max-w-2xl w-full space-y-8">
+        <div className="flex-1 p-4 pb-8">
+          <div className="max-w-2xl mx-auto space-y-8">
             
             {/* Title - removed subtitle */}
-            <div className="text-center">
+            <div className="text-center pt-8 md:pt-16">
               <h1 className="text-5xl md:text-8xl font-black neo-text-shadow text-white tracking-wider">
                 CARTOPOLIS
               </h1>
             </div>
 
             {/* Game Setup Form */}
-            <GameSetupForm onStartGame={onStartGame} />
+            <div className="px-2">
+              <GameSetupForm onStartGame={onStartGame} />
+            </div>
 
-            {/* Hall of Fame - Below the fold */}
-            <HallOfFame leaderboard={leaderboard} />
+            {/* Hall of Fame - Better mobile spacing */}
+            <div className="px-2 pb-8">
+              <HallOfFame leaderboard={leaderboard} />
+            </div>
           </div>
         </div>
       </div>

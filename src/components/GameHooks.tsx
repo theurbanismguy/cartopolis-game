@@ -5,6 +5,7 @@ import { Difficulty } from '../data/cities';
 export const useGameState = () => {
   const [score, setScore] = useState(0);
   const [totalGuesses, setTotalGuesses] = useState(0);
+  const [correctGuesses, setCorrectGuesses] = useState(0);
   const [currentRound, setCurrentRound] = useState(1);
   const [currentStreak, setCurrentStreak] = useState(0);
   const [bestStreak, setBestStreak] = useState(0);
@@ -14,6 +15,7 @@ export const useGameState = () => {
   const resetGame = () => {
     setScore(0);
     setTotalGuesses(0);
+    setCorrectGuesses(0);
     setCurrentRound(1);
     setCurrentStreak(0);
     setBestStreak(0);
@@ -31,16 +33,14 @@ export const useGameState = () => {
     const baseTime = difficulty === 'easy' ? 60 : 30;
     
     if (timeTaken <= baseTime) {
-      return Math.max(0, Math.floor((baseTime - timeTaken) / 5));
+      return Math.max(0, Math.floor((baseTime - timeTaken) / 15)); // Reduced time bonus scaling
     }
     return 0;
   };
 
-  const getStreakMultiplier = (streak: number): number => {
-    if (streak >= 10) return 5;
-    if (streak >= 5) return 3;
-    if (streak >= 3) return 2;
-    return 1;
+  const calculateAccuracy = (): number => {
+    if (totalGuesses === 0) return 0;
+    return Math.min(100, Math.round((correctGuesses / totalGuesses) * 100));
   };
 
   return {
@@ -48,6 +48,8 @@ export const useGameState = () => {
     setScore,
     totalGuesses,
     setTotalGuesses,
+    correctGuesses,
+    setCorrectGuesses,
     currentRound,
     currentStreak,
     setCurrentStreak,
@@ -60,6 +62,6 @@ export const useGameState = () => {
     resetGame,
     nextRound,
     calculateTimeBonus,
-    getStreakMultiplier
+    calculateAccuracy
   };
 };
