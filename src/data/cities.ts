@@ -87,82 +87,89 @@ export const cities: City[] = [
   { name: "Casablanca", country: "Morocco", lat: 33.5731, lng: -7.5898, population: 4370000, continent: "Africa" },
   { name: "Cape Town", country: "South Africa", lat: -33.9249, lng: 18.4241, population: 4524000, continent: "Africa" },
   { name: "Montreal", country: "Canada", lat: 45.5017, lng: -73.5673, population: 4098000, continent: "North America" },
+  { name: "Berlin", country: "Germany", lat: 52.5200, lng: 13.4050, population: 3669000, continent: "Europe" },
+  { name: "Rome", country: "Italy", lat: 41.9028, lng: 12.4964, population: 2873000, continent: "Europe" },
+  { name: "Kiev", country: "Ukraine", lat: 50.4501, lng: 30.5234, population: 2884000, continent: "Europe" },
+  { name: "Kathmandu", country: "Nepal", lat: 27.7172, lng: 85.3240, population: 1442271, continent: "Asia" },
+  { name: "Almaty", country: "Kazakhstan", lat: 43.2775, lng: 76.8958, population: 1916779, continent: "Asia" },
+  { name: "Tashkent", country: "Uzbekistan", lat: 41.2995, lng: 69.2401, population: 2485900, continent: "Asia" },
+  { name: "Minsk", country: "Belarus", lat: 53.9045, lng: 27.5615, population: 1982000, continent: "Europe" },
+  { name: "Bucharest", country: "Romania", lat: 44.4268, lng: 26.1025, population: 1883000, continent: "Europe" },
+  { name: "Warsaw", country: "Poland", lat: 52.2297, lng: 21.0122, population: 1790658, continent: "Europe" },
+  { name: "Hamburg", country: "Germany", lat: 53.5511, lng: 9.9937, population: 1906411, continent: "Europe" },
+  { name: "Budapest", country: "Hungary", lat: 47.4979, lng: 19.0402, population: 1752286, continent: "Europe" },
+  { name: "Vienna", country: "Austria", lat: 48.2082, lng: 16.3738, population: 1911191, continent: "Europe" },
+  { name: "Stockholm", country: "Sweden", lat: 59.3293, lng: 18.0686, population: 975551, continent: "Europe" },
+  { name: "Prague", country: "Czech Republic", lat: 50.0755, lng: 14.4378, population: 1335084, continent: "Europe" },
+  { name: "Sofia", country: "Bulgaria", lat: 42.6977, lng: 23.3219, population: 1328000, continent: "Europe" },
+  { name: "Athens", country: "Greece", lat: 37.9838, lng: 23.7275, population: 3153000, continent: "Europe" },
+  { name: "Munich", country: "Germany", lat: 48.1351, lng: 11.5820, population: 1488202, continent: "Europe" },
+  { name: "Milan", country: "Italy", lat: 45.4642, lng: 9.1900, population: 1396059, continent: "Europe" },
   
-  // Medium cities (500K-1M population)
+  // Medium cities (500K-1M population) for hard mode
   { name: "Vancouver", country: "Canada", lat: 49.2827, lng: -123.1207, population: 675218, continent: "North America" },
-  { name: "Berlin", country: "Germany", lat: 52.5200, lng: 13.4050, population: 891000, continent: "Europe" },
-  { name: "Rome", country: "Italy", lat: 41.9028, lng: 12.4964, population: 873000, continent: "Europe" },
-  { name: "Milan", country: "Italy", lat: 45.4642, lng: 9.1900, population: 808000, continent: "Europe" },
-  { name: "Munich", country: "Germany", lat: 48.1351, lng: 11.5820, population: 695000, continent: "Europe" },
-  { name: "Hamburg", country: "Germany", lat: 53.5511, lng: 9.9937, population: 654000, continent: "Europe" },
-  { name: "Vienna", country: "Austria", lat: 48.2082, lng: 16.3738, population: 643000, continent: "Europe" },
-  { name: "Amsterdam", country: "Netherlands", lat: 52.3676, lng: 4.9041, population: 581000, continent: "Europe" },
-  { name: "Brussels", country: "Belgium", lat: 50.8503, lng: 4.3517, population: 559000, continent: "Europe" },
-  { name: "Stockholm", country: "Sweden", lat: 59.3293, lng: 18.0686, population: 539000, continent: "Europe" },
-  { name: "Copenhagen", country: "Denmark", lat: 55.6761, lng: 12.5683, population: 525000, continent: "Europe" },
-  { name: "Helsinki", country: "Finland", lat: 60.1699, lng: 24.9384, population: 518000, continent: "Europe" },
-  { name: "Oslo", country: "Norway", lat: 59.9139, lng: 10.7522, population: 517000, continent: "Europe" },
-  { name: "Zurich", country: "Switzerland", lat: 47.3769, lng: 8.5417, population: 515000, continent: "Europe" },
-  { name: "Warsaw", country: "Poland", lat: 52.2297, lng: 21.0122, population: 900000, continent: "Europe" },
-  { name: "Prague", country: "Czech Republic", lat: 50.0755, lng: 14.4378, population: 743000, continent: "Europe" },
-  { name: "Budapest", country: "Hungary", lat: 47.4979, lng: 19.0402, population: 653000, continent: "Europe" },
-  { name: "Lisbon", country: "Portugal", lat: 38.7223, lng: -9.1393, population: 605000, continent: "Europe" },
-  { name: "Dublin", country: "Ireland", lat: 53.3498, lng: -6.2603, population: 544000, continent: "Europe" },
-  { name: "Edinburgh", country: "United Kingdom", lat: 55.9533, lng: -3.1883, population: 518000, continent: "Europe" },
-  { name: "Glasgow", country: "United Kingdom", lat: 55.8642, lng: -4.2518, population: 596000, continent: "Europe" },
+  { name: "Amsterdam", country: "Netherlands", lat: 52.3676, lng: 4.9041, population: 905234, continent: "Europe" },
+  { name: "Brussels", country: "Belgium", lat: 50.8503, lng: 4.3517, population: 1211035, continent: "Europe" },
+  { name: "Copenhagen", country: "Denmark", lat: 55.6761, lng: 12.5683, population: 660193, continent: "Europe" },
+  { name: "Helsinki", country: "Finland", lat: 60.1699, lng: 24.9384, population: 656920, continent: "Europe" },
+  { name: "Oslo", country: "Norway", lat: 59.9139, lng: 10.7522, population: 697549, continent: "Europe" },
+  { name: "Zurich", country: "Switzerland", lat: 47.3769, lng: 8.5417, population: 421878, continent: "Europe" },
+  { name: "Lisbon", country: "Portugal", lat: 38.7223, lng: -9.1393, population: 547631, continent: "Europe" },
+  { name: "Dublin", country: "Ireland", lat: 53.3498, lng: -6.2603, population: 554554, continent: "Europe" },
+  { name: "Edinburgh", country: "United Kingdom", lat: 55.9533, lng: -3.1883, population: 518500, continent: "Europe" },
+  { name: "Glasgow", country: "United Kingdom", lat: 55.8642, lng: -4.2518, population: 626410, continent: "Europe" },
   { name: "Manchester", country: "United Kingdom", lat: 53.4808, lng: -2.2426, population: 547000, continent: "Europe" },
-  { name: "Birmingham", country: "United Kingdom", lat: 52.4862, lng: -1.8904, population: 984000, continent: "Europe" },
-  { name: "Liverpool", country: "United Kingdom", lat: 53.4084, lng: -2.9916, population: 579000, continent: "Europe" },
-  { name: "Leeds", country: "United Kingdom", lat: 53.8008, lng: -1.5491, population: 516000, continent: "Europe" },
+  { name: "Birmingham", country: "United Kingdom", lat: 52.4862, lng: -1.8904, population: 1141816, continent: "Europe" },
+  { name: "Liverpool", country: "United Kingdom", lat: 53.4084, lng: -2.9916, population: 498042, continent: "Europe" },
+  { name: "Leeds", country: "United Kingdom", lat: 53.8008, lng: -1.5491, population: 789194, continent: "Europe" },
   
   // Smaller cities (100K-500K) for hard difficulty
-  { name: "Salzburg", country: "Austria", lat: 47.8095, lng: 13.0550, population: 155000, continent: "Europe" },
-  { name: "Graz", country: "Austria", lat: 47.0707, lng: 15.4395, population: 294000, continent: "Europe" },
-  { name: "Innsbruck", country: "Austria", lat: 47.2692, lng: 11.4041, population: 132000, continent: "Europe" },
+  { name: "Salzburg", country: "Austria", lat: 47.8095, lng: 13.0550, population: 155031, continent: "Europe" },
+  { name: "Graz", country: "Austria", lat: 47.0707, lng: 15.4395, population: 291072, continent: "Europe" },
+  { name: "Innsbruck", country: "Austria", lat: 47.2692, lng: 11.4041, population: 132493, continent: "Europe" },
   { name: "Luxembourg City", country: "Luxembourg", lat: 49.6116, lng: 6.1319, population: 125000, continent: "Europe" },
-  { name: "Bern", country: "Switzerland", lat: 46.9480, lng: 7.4474, population: 134000, continent: "Europe" },
-  { name: "Basel", country: "Switzerland", lat: 47.5596, lng: 7.5886, population: 177000, continent: "Europe" },
-  { name: "Geneva", country: "Switzerland", lat: 46.2044, lng: 6.1432, population: 201000, continent: "Europe" },
-  { name: "Lausanne", country: "Switzerland", lat: 46.5197, lng: 6.6323, population: 140000, continent: "Europe" },
-  { name: "Gothenburg", country: "Sweden", lat: 57.7089, lng: 11.9746, population: 580000, continent: "Europe" },
-  { name: "Malmö", country: "Sweden", lat: 55.6050, lng: 13.0038, population: 344000, continent: "Europe" },
-  { name: "Aarhus", country: "Denmark", lat: 56.1629, lng: 10.2039, population: 280000, continent: "Europe" },
-  { name: "Bergen", country: "Norway", lat: 60.3913, lng: 5.3221, population: 284000, continent: "Europe" },
-  { name: "Trondheim", country: "Norway", lat: 63.4305, lng: 10.3951, population: 207000, continent: "Europe" },
-  { name: "Tampere", country: "Finland", lat: 61.4991, lng: 23.7871, population: 238000, continent: "Europe" },
-  { name: "Turku", country: "Finland", lat: 60.4518, lng: 22.2666, population: 195000, continent: "Europe" },
-  { name: "Reykjavik", country: "Iceland", lat: 64.1466, lng: -21.9426, population: 131000, continent: "Europe" },
-  { name: "Tallinn", country: "Estonia", lat: 59.4370, lng: 24.7536, population: 437000, continent: "Europe" },
-  { name: "Riga", country: "Latvia", lat: 56.9496, lng: 24.1052, population: 633000, continent: "Europe" },
-  { name: "Vilnius", country: "Lithuania", lat: 54.6872, lng: 25.2797, population: 574000, continent: "Europe" },
-  { name: "Krakow", country: "Poland", lat: 50.0647, lng: 19.9450, population: 779000, continent: "Europe" },
-  { name: "Gdansk", country: "Poland", lat: 54.3520, lng: 18.6466, population: 470000, continent: "Europe" },
-  { name: "Wroclaw", country: "Poland", lat: 51.1079, lng: 17.0385, population: 641000, continent: "Europe" },
-  { name: "Bratislava", country: "Slovakia", lat: 48.1486, lng: 17.1077, population: 437000, continent: "Europe" },
-  { name: "Ljubljana", country: "Slovenia", lat: 46.0569, lng: 14.5058, population: 295000, continent: "Europe" },
-  { name: "Zagreb", country: "Croatia", lat: 45.8150, lng: 15.9819, population: 769000, continent: "Europe" },
-  { name: "Belgrade", country: "Serbia", lat: 44.7866, lng: 20.4489, population: 1166000, continent: "Europe" },
-  { name: "Sarajevo", country: "Bosnia and Herzegovina", lat: 43.8563, lng: 18.4131, population: 395000, continent: "Europe" },
-  { name: "Skopje", country: "North Macedonia", lat: 41.9973, lng: 21.4280, population: 544000, continent: "Europe" },
-  { name: "Tirana", country: "Albania", lat: 41.3275, lng: 19.8187, population: 418000, continent: "Europe" },
-  { name: "Podgorica", country: "Montenegro", lat: 42.4304, lng: 19.2594, population: 156000, continent: "Europe" },
-  { name: "Pristina", country: "Kosovo", lat: 42.6629, lng: 21.1655, population: 198000, continent: "Europe" },
-  { name: "Chisinau", country: "Moldova", lat: 47.0105, lng: 28.8638, population: 635000, continent: "Europe" },
-  { name: "Minsk", country: "Belarus", lat: 53.9045, lng: 27.5615, population: 1982000, continent: "Europe" },
-  { name: "Kiev", country: "Ukraine", lat: 50.4501, lng: 30.5234, population: 2884000, continent: "Europe" },
-  { name: "Lviv", country: "Ukraine", lat: 49.8397, lng: 24.0297, population: 724000, continent: "Europe" },
-  { name: "Odessa", country: "Ukraine", lat: 46.4825, lng: 30.7233, population: 1017000, continent: "Europe" },
-  { name: "Bucharest", country: "Romania", lat: 44.4268, lng: 26.1025, population: 1883000, continent: "Europe" },
-  { name: "Cluj-Napoca", country: "Romania", lat: 46.7712, lng: 23.6236, population: 324000, continent: "Europe" },
-  { name: "Sofia", country: "Bulgaria", lat: 42.6977, lng: 23.3219, population: 1328000, continent: "Europe" },
-  { name: "Plovdiv", country: "Bulgaria", lat: 42.1354, lng: 24.7453, population: 346000, continent: "Europe" },
-  { name: "Athens", country: "Greece", lat: 37.9838, lng: 23.7275, population: 3153000, continent: "Europe" },
-  { name: "Thessaloniki", country: "Greece", lat: 40.6401, lng: 22.9444, population: 325000, continent: "Europe" },
+  { name: "Bern", country: "Switzerland", lat: 46.9480, lng: 7.4474, population: 134591, continent: "Europe" },
+  { name: "Basel", country: "Switzerland", lat: 47.5596, lng: 7.5886, population: 177595, continent: "Europe" },
+  { name: "Geneva", country: "Switzerland", lat: 46.2044, lng: 6.1432, population: 201818, continent: "Europe" },
+  { name: "Lausanne", country: "Switzerland", lat: 46.5197, lng: 6.6323, population: 140202, continent: "Europe" },
+  { name: "Gothenburg", country: "Sweden", lat: 57.7089, lng: 11.9746, population: 583056, continent: "Europe" },
+  { name: "Malmö", country: "Sweden", lat: 55.6050, lng: 13.0038, population: 347949, continent: "Europe" },
+  { name: "Aarhus", country: "Denmark", lat: 56.1629, lng: 10.2039, population: 285273, continent: "Europe" },
+  { name: "Bergen", country: "Norway", lat: 60.3913, lng: 5.3221, population: 283929, continent: "Europe" },
+  { name: "Trondheim", country: "Norway", lat: 63.4305, lng: 10.3951, population: 207595, continent: "Europe" },
+  { name: "Tampere", country: "Finland", lat: 61.4991, lng: 23.7871, population: 238245, continent: "Europe" },
+  { name: "Turku", country: "Finland", lat: 60.4518, lng: 22.2666, population: 194244, continent: "Europe" },
+  { name: "Reykjavik", country: "Iceland", lat: 64.1466, lng: -21.9426, population: 131136, continent: "Europe" },
+  { name: "Tallinn", country: "Estonia", lat: 59.4370, lng: 24.7536, population: 437619, continent: "Europe" },
+  { name: "Riga", country: "Latvia", lat: 56.9496, lng: 24.1052, population: 632614, continent: "Europe" },
+  { name: "Vilnius", country: "Lithuania", lat: 54.6872, lng: 25.2797, population: 574221, continent: "Europe" },
+  { name: "Krakow", country: "Poland", lat: 50.0647, lng: 19.9450, population: 779115, continent: "Europe" },
+  { name: "Gdansk", country: "Poland", lat: 54.3520, lng: 18.6466, population: 470621, continent: "Europe" },
+  { name: "Wroclaw", country: "Poland", lat: 51.1079, lng: 17.0385, population: 641607, continent: "Europe" },
+  { name: "Bratislava", country: "Slovakia", lat: 48.1486, lng: 17.1077, population: 437725, continent: "Europe" },
+  { name: "Ljubljana", country: "Slovenia", lat: 46.0569, lng: 14.5058, population: 295504, continent: "Europe" },
+  { name: "Zagreb", country: "Croatia", lat: 45.8150, lng: 15.9819, population: 769944, continent: "Europe" },
+  { name: "Belgrade", country: "Serbia", lat: 44.7866, lng: 20.4489, population: 1166763, continent: "Europe" },
+  { name: "Sarajevo", country: "Bosnia and Herzegovina", lat: 43.8563, lng: 18.4131, population: 395133, continent: "Europe" },
+  { name: "Skopje", country: "North Macedonia", lat: 41.9973, lng: 21.4280, population: 544086, continent: "Europe" },
+  { name: "Tirana", country: "Albania", lat: 41.3275, lng: 19.8187, population: 418495, continent: "Europe" },
+  { name: "Podgorica", country: "Montenegro", lat: 42.4304, lng: 19.2594, population: 156169, continent: "Europe" },
+  { name: "Pristina", country: "Kosovo", lat: 42.6629, lng: 21.1655, population: 198897, continent: "Europe" },
+  { name: "Chisinau", country: "Moldova", lat: 47.0105, lng: 28.8638, population: 635994, continent: "Europe" },
+  { name: "Lviv", country: "Ukraine", lat: 49.8397, lng: 24.0297, population: 724713, continent: "Europe" },
+  { name: "Odessa", country: "Ukraine", lat: 46.4825, lng: 30.7233, population: 1017699, continent: "Europe" },
+  { name: "Cluj-Napoca", country: "Romania", lat: 46.7712, lng: 23.6236, population: 324576, continent: "Europe" },
+  { name: "Plovdiv", country: "Bulgaria", lat: 42.1354, lng: 24.7453, population: 346893, continent: "Europe" },
+  { name: "Thessaloniki", country: "Greece", lat: 40.6401, lng: 22.9444, population: 325182, continent: "Europe" },
   { name: "Nicosia", country: "Cyprus", lat: 35.1856, lng: 33.3823, population: 245000, continent: "Europe" },
   { name: "Valletta", country: "Malta", lat: 35.8989, lng: 14.5146, population: 198000, continent: "Europe" }
 ];
 
 export type Difficulty = 'easy' | 'hard';
+
+// Track recently shown cities to avoid immediate repeats
+let recentCities: string[] = [];
+const MAX_RECENT_CITIES = 8;
 
 export const getCitiesByDifficulty = (difficulty: Difficulty): City[] => {
   switch (difficulty) {
@@ -175,18 +182,43 @@ export const getCitiesByDifficulty = (difficulty: Difficulty): City[] => {
   }
 };
 
+// Fisher-Yates shuffle algorithm for better randomization
+function shuffleArray<T>(array: T[]): T[] {
+  const shuffled = [...array];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+}
+
 export const getRandomCity = (difficulty: Difficulty): City => {
-  const filteredCities = cities.filter(city => {
-    switch (difficulty) {
-      case 'easy':
-        return city.population >= 1000000; // 1M+ for easy
-      case 'hard':
-        return city.population >= 100000; // 100K+ for hard
-      default:
-        return true;
-    }
-  });
+  const filteredCities = getCitiesByDifficulty(difficulty);
   
-  const randomIndex = Math.floor(Math.random() * filteredCities.length);
-  return filteredCities[randomIndex];
+  // Filter out recently shown cities to avoid immediate repeats
+  const availableCities = filteredCities.filter(city => 
+    !recentCities.includes(city.name)
+  );
+  
+  // If we've exhausted all cities (unlikely), reset the recent list
+  const citiesToChooseFrom = availableCities.length > 0 ? availableCities : filteredCities;
+  
+  // Use better randomization
+  const shuffledCities = shuffleArray(citiesToChooseFrom);
+  const selectedCity = shuffledCities[0];
+  
+  // Add to recent cities list
+  recentCities.push(selectedCity.name);
+  
+  // Keep only the last MAX_RECENT_CITIES cities
+  if (recentCities.length > MAX_RECENT_CITIES) {
+    recentCities = recentCities.slice(-MAX_RECENT_CITIES);
+  }
+  
+  return selectedCity;
+};
+
+// Function to reset recent cities (useful when starting a new game)
+export const resetRecentCities = () => {
+  recentCities = [];
 };

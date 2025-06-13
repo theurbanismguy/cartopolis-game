@@ -24,11 +24,22 @@ const StartScreen: React.FC<StartScreenProps> = ({ onStartGame, leaderboard }) =
         <div className="flex-1 p-4 pb-8">
           <div className="max-w-2xl mx-auto space-y-8">
             
-            {/* Title - removed subtitle */}
+            {/* Title with attribution */}
             <div className="text-center pt-8 md:pt-16">
               <h1 className="text-5xl md:text-8xl font-black neo-text-shadow text-white tracking-wider">
                 CARTOPOLIS
               </h1>
+              <p className="text-lg md:text-xl text-white/90 font-semibold mt-2">
+                a game by{' '}
+                <a 
+                  href="https://www.instagram.com/theurbanismguy/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-accent hover:text-accent/80 transition-colors underline decoration-2 underline-offset-2"
+                >
+                  @theurbanismguy
+                </a>
+              </p>
             </div>
 
             {/* Game Setup Form */}

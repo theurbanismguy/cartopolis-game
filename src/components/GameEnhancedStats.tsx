@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
-import { Trophy, Target, Zap, Clock, Flame } from 'lucide-react';
+import { Star, Target, Zap, Clock, Flame } from 'lucide-react';
 import { Difficulty } from '../data/cities';
 
 interface GameEnhancedStatsProps {
@@ -25,7 +25,7 @@ const GameEnhancedStats: React.FC<GameEnhancedStatsProps> = ({
   bestStreak,
   timeBonus
 }) => {
-  const accuracy = totalGuesses > 0 ? Math.round((score / Math.max(totalGuesses, 1)) * 10) : 0;
+  const accuracy = totalGuesses > 0 ? Math.min(100, Math.round((totalGuesses > 0 ? score / totalGuesses : 0) * 100)) : 0;
   
   const getStreakColor = (streak: number) => {
     if (streak >= 10) return 'text-red-500';
@@ -56,11 +56,11 @@ const GameEnhancedStats: React.FC<GameEnhancedStatsProps> = ({
               </div>
             </div>
 
-            {/* Score and streaks */}
+            {/* Score and accuracy */}
             <div className="grid grid-cols-2 gap-3">
               <div className="text-center">
                 <div className="flex items-center justify-center gap-1 mb-1">
-                  <Trophy className="w-4 h-4 text-accent" />
+                  <Star className="w-4 h-4 text-yellow-500" />
                   <span className="text-xs font-bold uppercase">Score</span>
                 </div>
                 <div className="text-xl md:text-2xl font-black">{score}</div>
@@ -68,7 +68,7 @@ const GameEnhancedStats: React.FC<GameEnhancedStatsProps> = ({
               
               <div className="text-center">
                 <div className="flex items-center justify-center gap-1 mb-1">
-                  <Target className="w-4 h-4 text-secondary" />
+                  <Target className="w-4 h-4 text-blue-500" />
                   <span className="text-xs font-bold uppercase">Accuracy</span>
                 </div>
                 <div className="text-xl md:text-2xl font-black">{accuracy}%</div>
@@ -105,15 +105,14 @@ const GameEnhancedStats: React.FC<GameEnhancedStatsProps> = ({
               <div className="text-lg font-black text-blue-500">+{timeBonus}</div>
             </div>
 
-            {/* Streak multiplier indicator */}
+            {/* Streak indicator without multiplier */}
             {currentStreak >= 3 && (
               <div className="text-center p-2 bg-accent/20 border-2 border-accent">
                 <div className="text-sm font-black uppercase text-accent">
-                  {currentStreak >= 10 ? '5X MULTIPLIER!' : 
-                   currentStreak >= 5 ? '3X MULTIPLIER!' : '2X MULTIPLIER!'}
+                  ON FIRE! 🔥
                 </div>
                 <div className="text-xs font-bold uppercase">
-                  ON FIRE! 🔥
+                  {currentStreak} CITY STREAK!
                 </div>
               </div>
             )}

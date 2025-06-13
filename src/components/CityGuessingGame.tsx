@@ -1,16 +1,16 @@
 
 import React, { useState, useEffect } from 'react';
-import { City, getRandomCity, Difficulty } from '../data/cities';
+import { City, getRandomCity, Difficulty, resetRecentCities } from '../data/cities';
 import CityMap from './CityMap';
 import Leaderboard, { LeaderboardEntry } from './Leaderboard';
 import StartScreen from './StartScreen';
 import InteractiveCityInput from './InteractiveCityInput';
-import FloatingStats from './FloatingStats';
 import SimpleFloatingControls from './SimpleFloatingControls';
 import GameEnhancedStats from './GameEnhancedStats';
 import TopBar from './TopBar';
 import CompactWikipediaCard from './CompactWikipediaCard';
 import FloatingActionButtons from './FloatingActionButtons';
+import EndGameScreen from './EndGameScreen';
 import { useGameState } from './GameHooks';
 import { useHintSystem } from './HintSystem';
 import { toast } from 'sonner';
@@ -23,6 +23,7 @@ const CityGuessingGame: React.FC = () => {
   const [gameState, setGameState] = useState<'guessing' | 'correct' | 'incorrect'>('guessing');
   const [showAnswer, setShowAnswer] = useState(false);
   const [showLeaderboard, setShowLeaderboard] = useState(false);
+  const [showEndGameScreen, setShowEndGameScreen] = useState(false);
   const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([]);
   const [showWikipedia, setShowWikipedia] = useState(false);
   
@@ -73,10 +74,12 @@ const CityGuessingGame: React.FC = () => {
   const startGame = (name: string, selectedDifficulty: Difficulty) => {
     setPlayerName(name);
     setDifficulty(selectedDifficulty);
+    resetRecentCities(); // Reset the recent cities tracking
     setCurrentCity(getRandomCity(selectedDifficulty));
     setGameStarted(true);
     setGameState('guessing');
     setShowAnswer(false);
+    setShowEndGameScreen(false);
     resetGameState();
     resetHints();
     setRoundStartTime(Date.now());
@@ -140,10 +143,12 @@ const CityGuessingGame: React.FC = () => {
   };
 
   const resetGame = () => {
+    resetRecentCities(); // Reset the recent cities tracking
     setCurrentCity(getRandomCity(difficulty));
     setGameState('guessing');
     setShowAnswer(false);
     setShowWikipedia(false);
+    setShowEndGameScreen(false);
     resetGameState();
     resetHints();
     toast.success('Game reset! Good luck!');
@@ -189,13 +194,14 @@ const CityGuessingGame: React.FC = () => {
       });
     }
 
-    setShowLeaderboard(true);
-    toast.success('Game ended! Check the leaderboard to see your ranking.');
+    setShowEndGameScreen(true);
+    toast.success('Game ended! Check your final stats and ranking.');
   };
 
   const backToMenu = () => {
     setGameStarted(false);
     setShowLeaderboard(false);
+    setShowEndGameScreen(false);
     setCurrentCity(null);
     setGameState('guessing');
     setShowAnswer(false);
@@ -210,12 +216,33 @@ const CityGuessingGame: React.FC = () => {
     }
   };
 
+  const startNewGame = () => {
+    resetGame();
+    setShowEndGameScreen(false);
+  };
+
   // Start screen
   if (!gameStarted) {
     return <StartScreen onStartGame={startGame} leaderboard={leaderboard} />;
   }
 
-  // Leaderboard screen
+  // End game screen
+  if (showEndGameScreen) {
+    return (
+      <EndGameScreen
+        playerName={playerName}
+        finalScore={score}
+        accuracy={calculateAccuracy()}
+        bestStreak={bestStreak}
+        gamesPlayed={currentRound - 1}
+        leaderboard={leaderboard}
+        onNewGame={startNewGame}
+        onBackToMenu={backToMenu}
+      />
+    );
+  }
+
+  // Leaderboard screen (only when accessed during game, not after end game)
   if (showLeaderboard) {
     return (
       <div className="min-h-screen neo-gradient-bg p-4">
