@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Trophy, Medal, Award, Flame, Clock } from 'lucide-react';
@@ -67,7 +68,7 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ entries }) => {
       <CardHeader className="border-b-4 border-black">
         <CardTitle className="text-2xl font-black uppercase tracking-wider flex items-center gap-2">
           <Trophy className="w-6 h-6 text-accent" />
-          TODAY'S LEADERBOARD
+          LEADERBOARD
         </CardTitle>
         <p className="text-sm text-muted-foreground font-bold uppercase">
           {today} • Resets daily at 12 PM CET
@@ -89,42 +90,44 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ entries }) => {
                   index < 3 ? 'bg-gradient-to-r from-secondary/20 to-accent/20' : 'bg-muted/30'
                 } ${index === 0 ? 'border-4 border-accent' : ''}`}
               >
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-4 min-w-0 flex-1">
                   <div className={`w-10 h-10 border-4 border-black flex items-center justify-center font-black text-lg ${getBadgeColor(index)}`}>
                     {index < 3 ? getIcon(index) : index + 1}
                   </div>
-                  <div>
-                    <div className="font-black uppercase text-lg">{entry.name}</div>
-                    <div className="text-sm text-muted-foreground uppercase font-bold flex items-center gap-3">
-                      <span className={getDifficultyColor(entry.difficulty)}>
-                        {getDifficultyLabel(entry.difficulty)} MODE
-                      </span>
-                      <span>•</span>
-                      <span>{entry.gamesPlayed} Games</span>
-                      {(entry.streak && entry.streak > 0) && (
-                        <>
-                          <span>•</span>
-                          <span className="flex items-center gap-1 text-orange-500">
-                            <Flame className="w-3 h-3" />
-                            {entry.streak} Streak
-                          </span>
-                        </>
-                      )}
-                      {(entry.timeBonus && entry.timeBonus > 0) && (
-                        <>
-                          <span>•</span>
-                          <span className="flex items-center gap-1 text-blue-500">
-                            <Clock className="w-3 h-3" />
-                            +{entry.timeBonus}
-                          </span>
-                        </>
-                      )}
+                  <div className="min-w-0 flex-1">
+                    <div className="font-black uppercase text-lg truncate">{entry.name}</div>
+                    <div className="text-xs md:text-sm text-muted-foreground uppercase font-bold">
+                      <div className="flex flex-wrap items-center gap-1 md:gap-2">
+                        <span className={getDifficultyColor(entry.difficulty)}>
+                          {getDifficultyLabel(entry.difficulty)}
+                        </span>
+                        <span className="hidden sm:inline">•</span>
+                        <span className="whitespace-nowrap">{entry.gamesPlayed} Games</span>
+                        {(entry.streak && entry.streak > 0) && (
+                          <>
+                            <span className="hidden sm:inline">•</span>
+                            <span className="flex items-center gap-1 text-orange-500 whitespace-nowrap">
+                              <Flame className="w-3 h-3" />
+                              {entry.streak}
+                            </span>
+                          </>
+                        )}
+                        {(entry.timeBonus && entry.timeBonus > 0) && (
+                          <>
+                            <span className="hidden sm:inline">•</span>
+                            <span className="flex items-center gap-1 text-blue-500 whitespace-nowrap">
+                              <Clock className="w-3 h-3" />
+                              +{entry.timeBonus}
+                            </span>
+                          </>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>
-                <div className="text-right">
-                  <div className="font-black text-2xl text-primary">{entry.score}</div>
-                  <div className="text-sm text-muted-foreground font-bold">{entry.accuracy}% ACC</div>
+                <div className="text-right ml-2">
+                  <div className="font-black text-xl md:text-2xl text-primary">{entry.score}</div>
+                  <div className="text-xs md:text-sm text-muted-foreground font-bold">{entry.accuracy}% ACC</div>
                 </div>
               </div>
             ))}

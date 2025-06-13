@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Trophy, Flame, Clock } from 'lucide-react';
 import { LeaderboardEntry } from './Leaderboard';
@@ -27,7 +28,7 @@ const HallOfFame: React.FC<HallOfFameProps> = ({ leaderboard }) => {
       <div className="p-4 md:p-6 border-b-2 border-black">
         <h3 className="text-lg md:text-2xl font-black uppercase tracking-wider flex items-center gap-2">
           <Trophy className="w-5 h-5 md:w-6 md:h-6 text-accent" />
-          TODAY'S HALL OF FAME
+          HALL OF FAME
         </h3>
         <p className="text-xs md:text-sm text-muted-foreground font-bold uppercase mt-1">
           {today} • Resets daily at 12 PM CET
@@ -42,7 +43,7 @@ const HallOfFame: React.FC<HallOfFameProps> = ({ leaderboard }) => {
                 index < 3 ? 'bg-secondary/20' : 'bg-muted/50'
               }`}
             >
-              <div className="flex items-center gap-3 md:gap-4">
+              <div className="flex items-center gap-3 md:gap-4 min-w-0 flex-1">
                 <div className={`w-8 h-8 md:w-10 md:h-10 border-2 border-black flex items-center justify-center font-black text-sm md:text-base ${
                   index === 0 ? 'bg-yellow-400' : 
                   index === 1 ? 'bg-gray-300' : 
@@ -51,23 +52,25 @@ const HallOfFame: React.FC<HallOfFameProps> = ({ leaderboard }) => {
                   {index + 1}
                 </div>
                 <div className="min-w-0 flex-1">
-                  <div className="font-bold uppercase truncate max-w-[140px] md:max-w-none">
+                  <div className="font-bold uppercase truncate max-w-[120px] md:max-w-none">
                     {entry.name}
                   </div>
-                  <div className="text-xs md:text-sm text-muted-foreground uppercase flex flex-wrap gap-2">
-                    <span className={getDifficultyColor(entry.difficulty)}>
-                      {entry.difficulty.toUpperCase()}
-                    </span>
-                    <span>•</span>
-                    <span>{entry.gamesPlayed} Games</span>
-                    <span>•</span>
-                    <span>{entry.streak || 0} Streak</span>
-                    <span>•</span>
-                    <span>{entry.accuracy}% Acc</span>
+                  <div className="text-xs md:text-sm text-muted-foreground uppercase">
+                    <div className="flex flex-wrap gap-1 md:gap-2">
+                      <span className={getDifficultyColor(entry.difficulty)}>
+                        {entry.difficulty?.toUpperCase() || 'UNKNOWN'}
+                      </span>
+                      <span className="hidden sm:inline">•</span>
+                      <span className="whitespace-nowrap">{entry.gamesPlayed}G</span>
+                      <span className="hidden sm:inline">•</span>
+                      <span className="whitespace-nowrap">{entry.streak || 0}S</span>
+                      <span className="hidden sm:inline">•</span>
+                      <span className="whitespace-nowrap">{entry.accuracy}%</span>
+                    </div>
                   </div>
                 </div>
               </div>
-              <div className="text-right">
+              <div className="text-right ml-2">
                 <div className="font-black text-lg md:text-xl">{entry.score}</div>
               </div>
             </div>
