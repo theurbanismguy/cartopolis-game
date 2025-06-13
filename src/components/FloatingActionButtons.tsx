@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Lightbulb, X } from 'lucide-react';
+import { Lightbulb } from 'lucide-react';
 
 interface FloatingActionButtonsProps {
   onUseHint: () => void;
@@ -38,7 +38,7 @@ const FloatingActionButtons: React.FC<FloatingActionButtonsProps> = ({
         onClick={onEndGame}
         className="w-14 h-14 rounded-full bg-destructive/90 text-destructive-foreground backdrop-blur-sm border-2 border-black font-bold flex items-center justify-center shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all duration-100"
       >
-        <X className="w-5 h-5" />
+        <span className="text-xs font-black uppercase">END</span>
       </button>
     </div>
   );
