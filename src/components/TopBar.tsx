@@ -72,7 +72,7 @@ const TopBar: React.FC<TopBarProps> = ({
             {/* Right side - Menu button */}
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="p-1 bg-white border-2 border-black shadow-[1px_1px_0px_0px_rgba(0,0,0,1)]"
+              className="p-1 bg-white border-2 border-black shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-[1px] hover:translate-y-[1px] transition-all duration-100"
             >
               {isMenuOpen ? (
                 <X className="w-4 h-4" />
@@ -87,39 +87,37 @@ const TopBar: React.FC<TopBarProps> = ({
       {/* Dropdown Menu */}
       {isMenuOpen && (
         <div className="fixed top-12 right-2 z-50 md:hidden">
-          <div className="bg-white/95 backdrop-blur-sm border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] min-w-[200px]">
+          <div className="bg-white/95 backdrop-blur-sm border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] min-w-[200px]">
             <div className="p-2 space-y-2">
-              {/* Hint Button - Only during guessing */}
-              {gameState === 'guessing' && (
-                <div className="border-b border-black pb-2 mb-2">
-                  <button
-                    onClick={() => {
-                      onUseHint();
-                      setIsMenuOpen(false);
-                    }}
-                    disabled={!canUseHint}
-                    className={`w-full text-left text-sm px-3 py-3 border-2 border-black font-bold uppercase tracking-wider flex items-center justify-between ${
-                      canUseHint 
-                        ? 'bg-accent/20 hover:bg-accent/40 shadow-[1px_1px_0px_0px_rgba(0,0,0,1)]' 
-                        : 'opacity-50 cursor-not-allowed bg-muted'
-                    }`}
-                  >
-                    <div className="flex items-center gap-2">
-                      <Lightbulb className="w-4 h-4" />
-                      HINT
-                    </div>
-                    <span className="text-xs">({hintsUsed}/4)</span>
-                  </button>
+              {/* Hint Button - Always visible now */}
+              <button
+                onClick={() => {
+                  if (canUseHint && gameState === 'guessing') {
+                    onUseHint();
+                  }
+                  setIsMenuOpen(false);
+                }}
+                disabled={!canUseHint || gameState !== 'guessing'}
+                className={`w-full text-left text-sm px-3 py-3 border-2 border-black font-bold uppercase tracking-wider flex items-center justify-between transition-all duration-100 ${
+                  canUseHint && gameState === 'guessing'
+                    ? 'bg-accent/90 hover:bg-accent text-accent-foreground shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[1px] hover:translate-y-[1px]' 
+                    : 'opacity-50 cursor-not-allowed bg-muted/50'
+                }`}
+              >
+                <div className="flex items-center gap-2">
+                  <Lightbulb className="w-4 h-4" />
+                  HINT
                 </div>
-              )}
+                <span className="text-xs">({hintsUsed}/4)</span>
+              </button>
               
-              {/* Main Controls - Only the three requested */}
+              {/* Main Controls */}
               <button
                 onClick={() => {
                   onShowLeaderboard();
                   setIsMenuOpen(false);
                 }}
-                className="w-full text-left text-sm px-3 py-3 border-2 border-black bg-secondary/20 hover:bg-secondary/40 font-bold uppercase tracking-wider flex items-center gap-2 shadow-[1px_1px_0px_0px_rgba(0,0,0,1)]"
+                className="w-full text-left text-sm px-3 py-3 border-2 border-black bg-secondary/20 hover:bg-secondary/40 font-bold uppercase tracking-wider flex items-center gap-2 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[1px] hover:translate-y-[1px] transition-all duration-100"
               >
                 <Trophy className="w-4 h-4" />
                 LEADERBOARD
@@ -130,7 +128,7 @@ const TopBar: React.FC<TopBarProps> = ({
                   onBackToMenu();
                   setIsMenuOpen(false);
                 }}
-                className="w-full text-left text-sm px-3 py-3 border-2 border-black bg-muted hover:bg-muted/80 font-bold uppercase tracking-wider flex items-center gap-2 shadow-[1px_1px_0px_0px_rgba(0,0,0,1)]"
+                className="w-full text-left text-sm px-3 py-3 border-2 border-black bg-primary/20 hover:bg-primary/40 font-bold uppercase tracking-wider flex items-center gap-2 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[1px] hover:translate-y-[1px] transition-all duration-100"
               >
                 <Home className="w-4 h-4" />
                 HOME
@@ -141,7 +139,7 @@ const TopBar: React.FC<TopBarProps> = ({
                   onEndGame();
                   setIsMenuOpen(false);
                 }}
-                className="w-full text-left text-sm px-3 py-3 border-2 border-black bg-destructive/20 hover:bg-destructive/40 text-destructive font-bold uppercase tracking-wider flex items-center gap-2 shadow-[1px_1px_0px_0px_rgba(0,0,0,1)]"
+                className="w-full text-left text-sm px-3 py-3 border-2 border-black bg-destructive/20 hover:bg-destructive/40 text-destructive font-bold uppercase tracking-wider flex items-center gap-2 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[1px] hover:translate-y-[1px] transition-all duration-100"
               >
                 <X className="w-4 h-4" />
                 END GAME
