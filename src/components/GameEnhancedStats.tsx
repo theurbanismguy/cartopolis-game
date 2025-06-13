@@ -12,7 +12,6 @@ interface GameEnhancedStatsProps {
   difficulty: Difficulty;
   currentStreak: number;
   bestStreak: number;
-  timeBonus: number;
 }
 
 const GameEnhancedStats: React.FC<GameEnhancedStatsProps> = ({
@@ -22,8 +21,7 @@ const GameEnhancedStats: React.FC<GameEnhancedStatsProps> = ({
   playerName,
   difficulty,
   currentStreak,
-  bestStreak,
-  timeBonus
+  bestStreak
 }) => {
   const accuracy = totalGuesses > 0 ? Math.min(100, Math.round((totalGuesses > 0 ? score / totalGuesses : 0) * 100)) : 0;
   
@@ -94,15 +92,6 @@ const GameEnhancedStats: React.FC<GameEnhancedStatsProps> = ({
                 </div>
                 <div className="text-lg md:text-xl font-black">{bestStreak}</div>
               </div>
-            </div>
-
-            {/* Time bonus */}
-            <div className="text-center">
-              <div className="flex items-center justify-center gap-1 mb-1">
-                <Clock className="w-4 h-4 text-blue-500" />
-                <span className="text-xs font-bold uppercase">Speed Bonus</span>
-              </div>
-              <div className="text-lg font-black text-blue-500">+{timeBonus}</div>
             </div>
 
             {/* Streak indicator without multiplier */}
